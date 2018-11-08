@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <applicationHaul xmlns:a="http://www.appian.com/ae/types/2009">
-    <versionUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43618</versionUuid>
+    <versionUuid>e7be1880-a53f-4984-887b-ee94a45fc6ec</versionUuid>
     <application>
         <name>Advanced Designer - Setup App</name>
         <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22299</uuid>
@@ -70,6 +70,9 @@
                         <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43459</uuid>
                         <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43465</uuid>
                         <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43613</uuid>
+                        <uuid>_a-0000e19f-311e-8000-9ba2-011c48011c48_1716489</uuid>
+                        <uuid>_a-0000e19f-311e-8000-9ba2-011c48011c48_1716495</uuid>
+                        <uuid>_a-0000e19f-311e-8000-9ba2-011c48011c48_1716518</uuid>
                     </uuids>
                 </item>
                 <item>
@@ -281,5 +284,6 @@
     <history>
         <historyInfo versionUuid="_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43356"/>
         <historyInfo versionUuid="_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43618"/>
+        <historyInfo versionUuid="e7be1880-a53f-4984-887b-ee94a45fc6ec"/>
     </history>
-</applicationHaul><!--updated on 2018-11-08T09:52:42.188-->
+</applicationHaul><!--updated on 2018-11-08T09:55:51.088-->
