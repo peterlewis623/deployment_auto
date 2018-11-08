@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43604</versionUuid>
+    <rule>
+        <name>AD_AddVehiclesPart1</name>
+        <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43447</uuid>
+        <description>Part 1 of a wizard to add vehicles</description>
+        <parentUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22391</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_formLayout_v1"(
+  label: "Register New Vehicle",
+  contents: {
+    #"SYSTEM_SYSRULES_sectionLayout_v1"(
+      contents: {
+        #"SYSTEM_SYSRULES_columnsLayout"(
+          columns: {
+            #"SYSTEM_SYSRULES_columnLayout"(
+              contents: {
+                #"SYSTEM_SYSRULES_textField"(
+                  label: "Make",
+                  value: ri!vehicle.make,
+                  saveInto: ri!vehicle.make,
+                  required: true
+                ),
+                #"SYSTEM_SYSRULES_textField"(
+                  label: "Model",
+                  value: ri!vehicle.model,
+                  saveInto: ri!vehicle.model,
+                  required: true
+                ),
+                #"SYSTEM_SYSRULES_integerField"(
+                  label: "Year",
+                  value: ri!vehicle.year,
+                  saveInto: ri!vehicle.year,
+                  required: true
+                )
+              }
+            ),
+            #"SYSTEM_SYSRULES_columnLayout"(
+              contents: {
+                #"SYSTEM_SYSRULES_textField"(
+                  label: "License Plate",
+                  value: ri!vehicle.licensePlate,
+                  saveInto: ri!vehicle.licensePlate,
+                  required: true
+                ),
+                #"SYSTEM_SYSRULES_dropdownField"(
+                  label: "Category",
+                  placeholderLabel: "Select a category...",
+                  choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().name,
+                  choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().id,
+                  value: ri!vehicle.category,
+                  saveInto: ri!vehicle.category,
+                  required: true
+                ),
+                #"SYSTEM_SYSRULES_radioButtonField"(
+                  label: "Status",
+                  choiceLabels: {
+                    "Active",
+                    "Inactive"
+                  },
+                  choiceValues: {
+                    true,
+                    false
+                  },
+                  value: ri!vehicle.active,
+                  saveInto: ri!vehicle.active,
+                  choiceLayout: "COMPACT",
+                  required: true
+                )
+              }
+            )
+          }
+        )
+      }
+    )
+  },
+  buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+    primaryButtons: #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+      label: "Next",
+      style: "PRIMARY"
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>vehicle</name>
+            <type>
+                <name>AD_Vehicles</name>
+                <namespace>urn:com:appian:types:AD</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>peter.lewis@appian.com</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <typedValue>
+        <type>
+            <name>RuleTestConfig?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:name/>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:Expression">{
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+}</a:value>
+                    <a:nameRef>vehicle</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:assertions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43604"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e19d-4900-8000-9ba2-011c48011c48_35807</versionUuid>
+    <rule>
+        <name>AD_AddVehiclesForm</name>
+        <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35263</uuid>
+        <description>Poorly designed form used to add vehicles</description>
+        <parentUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22391</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+    batchSize: 10,
+    startIndex: 1
+  ),
+  with(
+    local!vehicles: todatasubset(
+      #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22398"(),
+      local!pagingInfo
+    ),
+    #"SYSTEM_SYSRULES_formLayout_v1"(
+      contents: {
+        #"SYSTEM_SYSRULES_gridField"(
+          label: "Items",
+          labelPosition: "ABOVE",
+          totalCount: local!vehicles.totalCount,
+          columns: {
+            #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "Year",
+              field: "year",
+              data: index(local!vehicles.data, "year",null)
+            ),
+            #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "Make",
+              field: "make",
+              data: index(local!vehicles.data, "make", null)
+            ),
+            #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "Model",
+              field: "model",
+              data: index(local!vehicles.data, "model",null)
+            ),
+            #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "License Plate",
+              field: "licensePlate",
+              data: index(local!vehicles.data, "licensePlate",null)
+            ),
+            #"SYSTEM_SYSRULES_gridImageColumn"(
+              label: "Available?",
+              field: "active",
+              data: #"SYSTEM_SYSRULES_forEach"(
+                items: local!vehicles,
+                expression: #"SYSTEM_SYSRULES_documentImage"(
+                  document: #"SYSTEM_SYSRULES_iconIndicator"(
+                    if(
+                      fv!item.active,
+                      "STATUS_OK",
+                      "STATUS_NOTDONE"
+                    )
+                  )
+                )
+              ),
+              size: "ICON"
+            )
+          },
+          identifiers: local!vehicles.data.id,
+          value: local!pagingInfo,
+          saveInto: {
+            local!pagingInfo
+          }
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout_v1"(
+          label: "Register New Vehicle",
+          contents: {
+            #"SYSTEM_SYSRULES_columnsLayout"(
+              columns: {
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Make",
+                      value: ri!vehicle[1].make,
+                      saveInto: ri!vehicle[1].make
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Model",
+                      value: ri!vehicle[1].model,
+                      saveInto: ri!vehicle[1].model
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Year",
+                      value: ri!vehicle[1].year,
+                      saveInto: ri!vehicle[1].year
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "License Plate",
+                      value: ri!vehicle[1].licensePlate,
+                      saveInto: ri!vehicle[1].licensePlate
+                    ),
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Category",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().id,
+                      value: ri!vehicle[1].category,
+                      saveInto: ri!vehicle[1].category
+                    ),
+                    #"SYSTEM_SYSRULES_radioButtonField"(
+                      label: "Status",
+                      choiceLabels: {"Active","Inactive"},
+                      choiceValues: {true,false},
+                      value: ri!vehicle[1].active,
+                      saveInto: ri!vehicle[1].active,
+                      choiceLayout: "COMPACT"
+                    )
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dateField"(
+                      label: "Last Maintenance Date",
+                      value: ri!vehicle[1].lastmaintenance,
+                      saveInto:  ri!vehicle[1].lastmaintenance
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Mileage",
+                      value: ri!vehicle[1].mileage,
+                      saveInto: ri!vehicle[1].mileage
+                    ),
+                    #"SYSTEM_SYSRULES_fileUploadField_v1"(
+                      label: "Image",
+                      value: ri!images[1],
+                      saveInto: ri!images[1]
+                    ),
+                    #"SYSTEM_SYSRULES_paragraphField"(
+                      label: "Features",
+                      value: ri!vehicle[1].longdesc,
+                      saveInto: ri!vehicle[1].longdesc
+                    )
+                    
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Registration Contact",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().id,
+                      value: ri!vehicle[1].registrationContact,
+                      saveInto: ri!vehicle[1].registrationContact
+                    ),
+                    with(
+                      local!registrationDetails: if(
+                        isnull(ri!vehicle[1].registrationContact),
+                        null,
+                        #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35308"(ri!vehicle[1].registrationContact)
+                      ),
+                      #"SYSTEM_SYSRULES_boxLayout"(
+                        showWhen: not(isnull(ri!vehicle[1].registrationContact)),
+                        label: "Contact Details",
+                        contents: {
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Address",
+                            value: local!registrationDetails.address,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Email",
+                            value: local!registrationDetails.email,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Last Updated",
+                            value: text(local!registrationDetails.dateupdated, "dd mmmm, yyyy"),
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          )
+                        }
+                      )
+                    )
+                  }
+                )
+              }
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout_v1"(
+          label: "Register New Vehicle",
+          contents: {
+            #"SYSTEM_SYSRULES_columnsLayout"(
+              columns: {
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Make",
+                      value: ri!vehicle[2].make,
+                      saveInto: ri!vehicle[2].make
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Model",
+                      value: ri!vehicle[2].model,
+                      saveInto: ri!vehicle[2].model
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Year",
+                      value: ri!vehicle[2].year,
+                      saveInto: ri!vehicle[2].year
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "License Plate",
+                      value: ri!vehicle[2].licensePlate,
+                      saveInto: ri!vehicle[2].licensePlate
+                    ),
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Category",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().id,
+                      value: ri!vehicle[2].category,
+                      saveInto: ri!vehicle[2].category
+                    ),
+                    #"SYSTEM_SYSRULES_radioButtonField"(
+                      label: "Status",
+                      choiceLabels: {"Active","Inactive"},
+                      choiceValues: {true,false},
+                      value: ri!vehicle[2].active,
+                      saveInto: ri!vehicle[2].active,
+                      choiceLayout: "COMPACT"
+                    )
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dateField"(
+                      label: "Last Maintenance Date",
+                      value: ri!vehicle[2].lastmaintenance,
+                      saveInto:  ri!vehicle[2].lastmaintenance
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Mileage",
+                      value: ri!vehicle[2].mileage,
+                      saveInto: ri!vehicle[2].mileage
+                    ),
+                    #"SYSTEM_SYSRULES_fileUploadField_v1"(
+                      label: "Image",
+                      value: ri!images[2],
+                      saveInto: ri!images[2]
+                    ),
+                    #"SYSTEM_SYSRULES_paragraphField"(
+                      label: "Features",
+                      value: ri!vehicle[2].longdesc,
+                      saveInto: ri!vehicle[2].longdesc
+                    )
+                    
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Registration Contact",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().id,
+                      value: ri!vehicle[2].registrationContact,
+                      saveInto: ri!vehicle[2].registrationContact
+                    ),
+                    with(
+                      local!registrationDetails: if(
+                        isnull(ri!vehicle[2].registrationContact),
+                        null,
+                        #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35308"(ri!vehicle[2].registrationContact)
+                      ),
+                      #"SYSTEM_SYSRULES_boxLayout"(
+                        showWhen: not(isnull(ri!vehicle[2].registrationContact)),
+                        label: "Contact Details",
+                        contents: {
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Address",
+                            value: local!registrationDetails.address,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Email",
+                            value: local!registrationDetails.email,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Last Updated",
+                            value: text(local!registrationDetails.dateupdated, "dd mmmm, yyyy"),
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          )
+                        }
+                      )
+                    )
+                  }
+                )
+              }
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout_v1"(
+          label: "Register New Vehicle",
+          contents: {
+            #"SYSTEM_SYSRULES_columnsLayout"(
+              columns: {
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Make",
+                      value: ri!vehicle[3].make,
+                      saveInto: ri!vehicle[3].make
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Model",
+                      value: ri!vehicle[3].model,
+                      saveInto: ri!vehicle[3].model
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Year",
+                      value: ri!vehicle[3].year,
+                      saveInto: ri!vehicle[3].year
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "License Plate",
+                      value: ri!vehicle[3].licensePlate,
+                      saveInto: ri!vehicle[3].licensePlate
+                    ),
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Category",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().id,
+                      value: ri!vehicle[3].category,
+                      saveInto: ri!vehicle[3].category
+                    ),
+                    #"SYSTEM_SYSRULES_radioButtonField"(
+                      label: "Status",
+                      choiceLabels: {"Active","Inactive"},
+                      choiceValues: {true,false},
+                      value: ri!vehicle[3].active,
+                      saveInto: ri!vehicle[3].active,
+                      choiceLayout: "COMPACT"
+                    )
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dateField"(
+                      label: "Last Maintenance Date",
+                      value: ri!vehicle[3].lastmaintenance,
+                      saveInto:  ri!vehicle[3].lastmaintenance
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Mileage",
+                      value: ri!vehicle[3].mileage,
+                      saveInto: ri!vehicle[3].mileage
+                    ),
+                    #"SYSTEM_SYSRULES_fileUploadField_v1"(
+                      label: "Image",
+                      value: ri!images[3],
+                      saveInto: ri!images[3]
+                    ),
+                    #"SYSTEM_SYSRULES_paragraphField"(
+                      label: "Features",
+                      value: ri!vehicle[3].longdesc,
+                      saveInto: ri!vehicle[3].longdesc
+                    )
+                    
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Registration Contact",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().id,
+                      value: ri!vehicle[3].registrationContact,
+                      saveInto: ri!vehicle[3].registrationContact
+                    ),
+                    with(
+                      local!registrationDetails: if(
+                        isnull(ri!vehicle[3].registrationContact),
+                        null,
+                        #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35308"(ri!vehicle[3].registrationContact)
+                      ),
+                      #"SYSTEM_SYSRULES_boxLayout"(
+                        showWhen: not(isnull(ri!vehicle[3].registrationContact)),
+                        label: "Contact Details",
+                        contents: {
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Address",
+                            value: local!registrationDetails.address,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Email",
+                            value: local!registrationDetails.email,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Last Updated",
+                            value: text(local!registrationDetails.dateupdated, "dd mmmm, yyyy"),
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          )
+                        }
+                      )
+                    )
+                  }
+                )
+              }
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout_v1"(
+          label: "Register New Vehicle",
+          contents: {
+            #"SYSTEM_SYSRULES_columnsLayout"(
+              columns: {
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Make",
+                      value: ri!vehicle[4].make,
+                      saveInto: ri!vehicle[4].make
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Model",
+                      value: ri!vehicle[4].model,
+                      saveInto: ri!vehicle[4].model
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Year",
+                      value: ri!vehicle[4].year,
+                      saveInto: ri!vehicle[4].year
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "License Plate",
+                      value: ri!vehicle[4].licensePlate,
+                      saveInto: ri!vehicle[4].licensePlate
+                    ),
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Category",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().id,
+                      value: ri!vehicle[4].category,
+                      saveInto: ri!vehicle[4].category
+                    ),
+                    #"SYSTEM_SYSRULES_radioButtonField"(
+                      label: "Status",
+                      choiceLabels: {"Active","Inactive"},
+                      choiceValues: {true,false},
+                      value: ri!vehicle[4].active,
+                      saveInto: ri!vehicle[4].active,
+                      choiceLayout: "COMPACT"
+                    )
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dateField"(
+                      label: "Last Maintenance Date",
+                      value: ri!vehicle[4].lastmaintenance,
+                      saveInto:  ri!vehicle[4].lastmaintenance
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Mileage",
+                      value: ri!vehicle[4].mileage,
+                      saveInto: ri!vehicle[4].mileage
+                    ),
+                    #"SYSTEM_SYSRULES_fileUploadField_v1"(
+                      label: "Image",
+                      value: ri!images[4],
+                      saveInto: ri!images[4]
+                    ),
+                    #"SYSTEM_SYSRULES_paragraphField"(
+                      label: "Features",
+                      value: ri!vehicle[4].longdesc,
+                      saveInto: ri!vehicle[4].longdesc
+                    )
+                    
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Registration Contact",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().id,
+                      value: ri!vehicle[4].registrationContact,
+                      saveInto: ri!vehicle[4].registrationContact
+                    ),
+                    with(
+                      local!registrationDetails: if(
+                        isnull(ri!vehicle[4].registrationContact),
+                        null,
+                        #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35308"(ri!vehicle[4].registrationContact)
+                      ),
+                      #"SYSTEM_SYSRULES_boxLayout"(
+                        showWhen: not(isnull(ri!vehicle[4].registrationContact)),
+                        label: "Contact Details",
+                        contents: {
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Address",
+                            value: local!registrationDetails.address,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Email",
+                            value: local!registrationDetails.email,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Last Updated",
+                            value: text(local!registrationDetails.dateupdated, "dd mmmm, yyyy"),
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          )
+                        }
+                      )
+                    )
+                  }
+                )
+              }
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout_v1"(
+          label: "Register New Vehicle",
+          contents: {
+            #"SYSTEM_SYSRULES_columnsLayout"(
+              columns: {
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Make",
+                      value: ri!vehicle[5].make,
+                      saveInto: ri!vehicle[5].make
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "Model",
+                      value: ri!vehicle[5].model,
+                      saveInto: ri!vehicle[5].model
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Year",
+                      value: ri!vehicle[5].year,
+                      saveInto: ri!vehicle[5].year
+                    ),
+                    #"SYSTEM_SYSRULES_textField"(
+                      label: "License Plate",
+                      value: ri!vehicle[5].licensePlate,
+                      saveInto: ri!vehicle[5].licensePlate
+                    ),
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Category",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22409"().id,
+                      value: ri!vehicle[5].category,
+                      saveInto: ri!vehicle[5].category
+                    ),
+                    #"SYSTEM_SYSRULES_radioButtonField"(
+                      label: "Status",
+                      choiceLabels: {"Active","Inactive"},
+                      choiceValues: {true,false},
+                      value: ri!vehicle[5].active,
+                      saveInto: ri!vehicle[5].active,
+                      choiceLayout: "COMPACT"
+                    )
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dateField"(
+                      label: "Last Maintenance Date",
+                      value: ri!vehicle[5].lastmaintenance,
+                      saveInto:  ri!vehicle[5].lastmaintenance
+                    ),
+                    #"SYSTEM_SYSRULES_integerField"(
+                      label: "Mileage",
+                      value: ri!vehicle[5].mileage,
+                      saveInto: ri!vehicle[5].mileage
+                    ),
+                    #"SYSTEM_SYSRULES_fileUploadField_v1"(
+                      label: "Image",
+                      value: ri!images[5],
+                      saveInto: ri!images[5]
+                    ),
+                    #"SYSTEM_SYSRULES_paragraphField"(
+                      label: "Features",
+                      value: ri!vehicle[5].longdesc,
+                      saveInto: ri!vehicle[5].longdesc
+                    )
+                    
+                  }
+                ),
+                #"SYSTEM_SYSRULES_columnLayout"(
+                  contents: {
+                    #"SYSTEM_SYSRULES_dropdownField"(
+                      label: "Registration Contact",
+                      placeholderLabel: "Select a category...",
+                      choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().name,
+                      choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().id,
+                      value: ri!vehicle[5].registrationContact,
+                      saveInto: ri!vehicle[5].registrationContact
+                    ),
+                    with(
+                      local!registrationDetails: if(
+                        isnull(ri!vehicle[5].registrationContact),
+                        null,
+                        #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35308"(ri!vehicle[5].registrationContact)
+                      ),
+                      #"SYSTEM_SYSRULES_boxLayout"(
+                        showWhen: not(isnull(ri!vehicle[5].registrationContact)),
+                        label: "Contact Details",
+                        contents: {
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Address",
+                            value: local!registrationDetails.address,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Email",
+                            value: local!registrationDetails.email,
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          ),
+                          #"SYSTEM_SYSRULES_textField"(
+                            label: "Last Updated",
+                            value: text(local!registrationDetails.dateupdated, "dd mmmm, yyyy"),
+                            readOnly: true,
+                            labelPosition: "JUSTIFIED"
+                          )
+                        }
+                      )
+                    )
+                  }
+                )
+              }
+            )
+          }
+        )
+      }
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>vehicle</name>
+            <type>
+                <name>AD_Vehicles?list</name>
+                <namespace>urn:com:appian:types:AD</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>images</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <typedValue>
+        <type>
+            <name>RuleTestConfig?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:name/>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:Expression">{
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+  'type!{urn:com:appian:types:AD}AD_Vehicles'(),
+}</a:value>
+                    <a:nameRef>vehicle</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:Expression">{null,null,null,null,null}</a:value>
+                    <a:nameRef>images</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:assertions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35323"/>
+        <historyInfo versionUuid="_a-0000e19d-4900-8000-9ba2-011c48011c48_35807"/>
+    </history>
+</contentHaul>

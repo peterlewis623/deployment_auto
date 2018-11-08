@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e19d-4900-8000-9ba2-011c48011c48_35811</versionUuid>
+    <rule>
+        <name>AD_AddVehiclesPart3</name>
+        <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43465</uuid>
+        <description>Confirmation screen for adding new vehicles</description>
+        <parentUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22391</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!registrationDetails: if(
+    isnull(
+      ri!vehicle.registrationContact
+    ),
+    null,
+    #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35308"(
+      ri!vehicle.registrationContact
+    )
+  ),
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+    label: "Confirm Vehicle Details",
+    contents: {
+      #"SYSTEM_SYSRULES_columnsLayout"(
+        columns: {
+          #"SYSTEM_SYSRULES_columnLayout"(
+            contents: {
+              #"SYSTEM_SYSRULES_textField"(
+                label: "Make",
+                labelPosition: "ADJACENT",
+                value: ri!vehicle.make,
+                readOnly: true
+              ),
+              #"SYSTEM_SYSRULES_textField"(
+                label: "Model",
+                labelPosition: "ADJACENT",
+                value: ri!vehicle.model,
+                readOnly: true
+              ),
+              #"SYSTEM_SYSRULES_textField"(
+                label: "Year",
+                labelPosition: "ADJACENT",
+                value: ri!vehicle.year,
+                readOnly: true
+              ),
+              #"SYSTEM_SYSRULES_textField"(
+                label: "License Plate",
+                labelPosition: "ADJACENT",
+                value: ri!vehicle.licenseplate,
+                readOnly: true
+              ),
+              #"SYSTEM_SYSRULES_textField"(
+                label: "Category",
+                labelPosition: "ADJACENT",
+                value: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22420"(
+                  ri!vehicle.category
+                ).name,
+                readOnly: true,
+                showWhen: not(isnull(ri!vehicle.category))
+              )
+            }
+          ),
+          #"SYSTEM_SYSRULES_columnLayout"(
+            contents: {
+              #"SYSTEM_SYSRULES_imageField_v1"(
+                label: "Active?",
+                images: #"SYSTEM_SYSRULES_documentImage"(
+                  document: #"SYSTEM_SYSRULES_iconIndicator"(
+                    if(
+                      ri!vehicle.active,
+                      "STATUS_OK",
+                      "STATUS_NOTDONE"
+                    )
+                  ),
+                  caption: if(
+                    ri!vehicle.active,
+                    "Active",
+                    "Inactive"
+                  )
+                ),
+                size: "ICON",
+                labelPosition: "ADJACENT"
+              ),
+              #"SYSTEM_SYSRULES_dateField"(
+                label: "Last Maintenance Date",
+                labelPosition: "ADJACENT",
+                value: ri!vehicle.lastmaintenance,
+                readOnly: true
+              ),
+              #"SYSTEM_SYSRULES_textField"(
+                label: "Mileage",
+                labelPosition: "ADJACENT",
+                value: ri!vehicle.make,
+                readOnly: true
+              ),
+              #"SYSTEM_SYSRULES_textField"(
+                label: "Features",
+                labelPosition: "ADJACENT",
+                value: ri!vehicle.longdesc,
+                readOnly: true
+              )
+            }
+          ),
+          #"SYSTEM_SYSRULES_columnLayout"(
+            contents: {
+              #"SYSTEM_SYSRULES_boxLayout"(
+                showWhen: not(isnull(ri!vehicle.registrationContact)),
+                label: "Contact Details",
+                contents: {
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Address",
+                    value: local!registrationDetails.address,
+                    readOnly: true,
+                    labelPosition: "JUSTIFIED"
+                  ),
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Email",
+                    value: local!registrationDetails.email,
+                    readOnly: true,
+                    labelPosition: "JUSTIFIED"
+                  ),
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Last Updated",
+                    value: text(
+                      local!registrationDetails.dateupdated,
+                      "dd mmmm, yyyy"
+                    ),
+                    readOnly: true,
+                    labelPosition: "JUSTIFIED"
+                  )
+                }
+              )
+            }
+          )
+        }
+      )
+    },
+    buttons: {
+      #"SYSTEM_SYSRULES_ButtonLayout"(
+        primaryButtons: {
+          #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+            label: "Submit",
+            style: "PRIMARY"
+          )
+        },
+        secondaryButtons: {
+          #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+            label: "Cancel",
+            value: true,
+            saveInto: ri!cancel
+          )
+        }
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>vehicle</name>
+            <type>
+                <name>AD_Vehicles</name>
+                <namespace>urn:com:appian:types:AD</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>cancel</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43626"/>
+        <historyInfo versionUuid="_a-0000e19d-4900-8000-9ba2-011c48011c48_35811"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_41355</versionUuid>
+    <rule>
+        <name>AD_ParseRspQuery</name>
+        <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_39911</uuid>
+        <description>Parse the rsp!query variable into a more usable format. Returns pagingInfo, searchText, filters, and ID</description>
+        <parentUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22391</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>with(
+  local!parentLFS: index(
+    ri!rspQuery,
+    "logicalExpression|filter|search",
+    null
+  ),
+  local!childLFS: index(
+    local!parentLFS,
+    "logicalExpression|filter|search",
+    null
+  ),
+  local!mainLFS: if(
+    isnull(
+      local!childLFS
+    ),
+    local!parentLFS,
+    local!childLFS
+  ),
+  local!types: apply(
+    fn!runtimetypeof,
+    {
+      local!mainLFS
+    }
+  ),
+  local!searchCdt: index(
+    {
+      local!mainLFS
+    },
+    where(
+      local!types = 'type!{http://www.appian.com/ae/types/2009}Search'
+    ),
+    null
+  ),
+  local!filterCdts: index(
+    {
+      local!mainLFS
+    },
+    where(
+      local!types = 'type!{http://www.appian.com/ae/types/2009}QueryFilter'
+    ),
+    {}
+  ),
+  local!paging: index(
+    ri!rspQuery,
+    "pagingInfo",
+    topaginginfo(
+      1,
+      100
+    )
+  ),
+  local!filters: cast(
+    'type!{http://www.appian.com/ae/types/2009}QueryFilter?list',
+    local!filterCdts
+  ),
+  {
+    pagingInfo: local!paging,
+    searchText: tostring(
+      index(
+        cast(
+          'type!{http://www.appian.com/ae/types/2009}Search',
+          local!searchCdt
+        ),
+        "searchQuery",
+        ""
+      )
+    ),
+    filters: local!filters,
+    id: displayvalue(
+      "rp!id",
+      index(local!filters, "field", {}),
+      index(local!filters, "value", {}),
+      null
+    )
+  }
+)</definition>
+        <namedTypedValue>
+            <name>rspQuery</name>
+            <type>
+                <name>Query</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000dfb1-abbd-8000-9ba2-011c48011c48_41355"/>
+    </history>
+</contentHaul>

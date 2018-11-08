@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<processModelFolderHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_g-0000e19d-4900-8000-f92f-7f0000014e7a_61</versionUuid>
+    <processModelFolder>
+        <name>AD Process Models Folder</name>
+        <uuid>_g-0000dfb1-ab72-8000-f92f-7f0000014e7a_30</uuid>
+        <description>Contains all process models for the Advanced Designer setup app</description>
+    </processModelFolder>
+    <roleMap>
+        <role name="ADMIN_OWNER">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dfb1-ab71-8000-9aee-01075c01075c_10</groupUuid>
+            </groups>
+        </role>
+        <role name="EDITOR">
+            <users/>
+            <groups/>
+        </role>
+        <role name="EXPLICIT_NONMEMBER">
+            <users/>
+            <groups/>
+        </role>
+        <role name="VIEWER">
+            <users/>
+            <groups/>
+        </role>
+        <role name="MANAGER">
+            <users/>
+            <groups/>
+        </role>
+        <role name="INITIATOR">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_g-0000e19d-4900-8000-f92f-7f0000014e7a_61"/>
+    </history>
+</processModelFolderHaul>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dataStoreHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e19d-4900-8000-9ba2-011c48011c48_35707</versionUuid>
+    <dataStore>
+        <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22303</uuid>
+        <name>AD Data Store</name>
+        <description>Data store for advanced designer setup</description>
+        <dataSourceKey>jdbc/Appian</dataSourceKey>
+        <adaptingExplicitSqlNames>false</adaptingExplicitSqlNames>
+        <autoUpdateSchema>false</autoUpdateSchema>
+        <entities>
+            <entity>
+                <uuid>7764c6da-ba42-4905-827b-eafd43a4b12a</uuid>
+                <name>AD_VehicleCategory</name>
+                <type>{urn:com:appian:types:AD}AD_VehicleCategory</type>
+            </entity>
+            <entity>
+                <uuid>12d8b9a4-1717-4be0-84af-41824795c3d0</uuid>
+                <name>AD_Vehicles</name>
+                <type>{urn:com:appian:types:AD}AD_Vehicles</type>
+            </entity>
+            <entity>
+                <uuid>d2ac4eee-9505-43d7-a465-0736cb27c811</uuid>
+                <name>AD_RegistrationContact</name>
+                <type>{urn:com:appian:types}AD_RegistrationContact</type>
+            </entity>
+            <entity>
+                <uuid>b8ee2575-4608-4d3b-881e-549c49ef1152</uuid>
+                <name>AD_Customers</name>
+                <type>{urn:com:appian:types:AD}AD_Customers</type>
+            </entity>
+        </entities>
+    </dataStore>
+    <isPublished>true</isPublished>
+    <roleMap>
+        <role inherit="false" allowForAll="false" name="administrators">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dfb1-ab71-8000-9aee-01075c01075c_10</groupUuid>
+            </groups>
+        </role>
+        <role inherit="false" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e19d-4900-8000-9ba2-011c48011c48_35707"/>
+    </history>
+</dataStoreHaul>

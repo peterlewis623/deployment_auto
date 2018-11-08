@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="urn:com:appian:types:AD"
+  xmlns:tns="urn:com:appian:types:AD" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="AD_Customers">
+    <xsd:annotation>
+      <xsd:appinfo source="appian.jpa">
+		@Table(name="customer")
+	  </xsd:appinfo>
+      <xsd:documentation><![CDATA[Customer details to read/write from]]></xsd:documentation>
+      <xsd:appinfo source="http://www.appian.com/ae/types/2009">
+        <ns2:Metadata xmlns:ns2="http://www.appian.com/ae/types/2009">
+          <ns2:versionUuid>0000e19f-a4d6-8000-f92f-7f0000014e7a</ns2:versionUuid>
+          <ns2:history>
+            <ns2:historyInfo versionUuid="0000e19f-a4d6-8000-f92f-7f0000014e7a"/>
+          </ns2:history>
+        </ns2:Metadata>
+      </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="customerId" nillable="true" type="xsd:int">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Id @GeneratedValue</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="companyName" nillable="true" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(length=50)</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="email" nillable="true" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(length=50)</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="city" nillable="true" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(length=50)</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="country" nillable="true" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(length=50)</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="phoneNumber" nillable="true" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(length=50)</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="date" nillable="true" type="xsd:date"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

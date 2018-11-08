@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_41342</versionUuid>
+    <rule>
+        <name>AD_ConvertDates</name>
+        <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_39905</uuid>
+        <description>Convert dates from ISO format into an Appian format</description>
+        <parentUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22391</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>date(&#xD;
+      left(&#xD;
+        ri!terrestrial_date,&#xD;
+        4&#xD;
+      ),&#xD;
+      right(&#xD;
+        left(&#xD;
+          ri!terrestrial_date,&#xD;
+          7&#xD;
+        ),&#xD;
+        2&#xD;
+      ),&#xD;
+      right(&#xD;
+        ri!terrestrial_date,&#xD;
+        2&#xD;
+      )&#xD;
+    )</definition>
+        <namedTypedValue>
+            <name>terrestrial_date</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000dfb1-abbd-8000-9ba2-011c48011c48_41342"/>
+    </history>
+</contentHaul>

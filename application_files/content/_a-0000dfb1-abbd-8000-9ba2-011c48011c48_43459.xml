@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43612</versionUuid>
+    <rule>
+        <name>AD_AddVehiclesPart2</name>
+        <uuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43459</uuid>
+        <description>Part 2 of a wizard to add new vehicles</description>
+        <parentUuid>_a-0000dfb1-abbd-8000-9ba2-011c48011c48_22391</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_formLayout_v1"(
+  label: "Additional Details",
+  contents: {
+    #"SYSTEM_SYSRULES_columnsLayout"(
+      columns: {
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_dateField"(
+              label: "Last Maintenance Date",
+              value: ri!vehicle.lastmaintenance,
+              saveInto: ri!vehicle.lastmaintenance
+            ),
+            #"SYSTEM_SYSRULES_integerField"(
+              label: "Mileage",
+              value: ri!vehicle.mileage,
+              saveInto: ri!vehicle.mileage
+            ),
+            #"SYSTEM_SYSRULES_paragraphField"(
+              label: "Features",
+              value: ri!vehicle.longdesc,
+              saveInto: ri!vehicle.longdesc
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_dropdownField"(
+              label: "Registration Contact",
+              placeholderLabel: "Select a category...",
+              choiceLabels: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().name,
+              choiceValues: #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35297"().id,
+              value: ri!vehicle.registrationContact,
+              saveInto: ri!vehicle.registrationContact,
+              required: true
+            ),
+            with(
+              local!registrationDetails: if(
+                isnull(
+                  ri!vehicle.registrationContact
+                ),
+                null,
+                #"_a-0000dfb1-abbd-8000-9ba2-011c48011c48_35308"(
+                  ri!vehicle.registrationContact
+                )
+              ),
+              #"SYSTEM_SYSRULES_boxLayout"(
+                showWhen: not(
+                  isnull(
+                    ri!vehicle.registrationContact
+                  )
+                ),
+                label: "Contact Details",
+                contents: {
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Address",
+                    value: local!registrationDetails.address,
+                    readOnly: true,
+                    labelPosition: "JUSTIFIED"
+                  ),
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Email",
+                    value: local!registrationDetails.email,
+                    readOnly: true,
+                    labelPosition: "JUSTIFIED"
+                  ),
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Last Updated",
+                    value: text(
+                      local!registrationDetails.dateupdated,
+                      "dd mmmm, yyyy"
+                    ),
+                    readOnly: true,
+                    labelPosition: "JUSTIFIED"
+                  )
+                }
+              )
+            )
+          }
+        )
+      }
+    )
+  },
+  buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+    primaryButtons: {
+      #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+        label: "Next",
+        style: "PRIMARY"
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>vehicle</name>
+            <type>
+                <name>AD_Vehicles</name>
+                <namespace>urn:com:appian:types:AD</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000dfb1-abbd-8000-9ba2-011c48011c48_43612"/>
+    </history>
+</contentHaul>
