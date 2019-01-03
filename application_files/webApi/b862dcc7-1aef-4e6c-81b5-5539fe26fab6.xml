@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<webApiHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>9d4c9e21-baaf-408b-8ac8-c5fdca2aeddc</versionUuid>
+    <webApi a:uuid="b862dcc7-1aef-4e6c-81b5-5539fe26fab6" name="PDL Insert Account Number">
+        <a:description>Allows users to add a new bank account number</a:description>
+        <a:expression>with(
+  local!value: cast(
+    'type!{urn:com:appian:types:PDL}PDL_AccountNumber',
+    #"SYSTEM_SYSRULES_fromJson"(http!request.body)
+  ),
+  local!valueValid: and(
+    not(isnull(local!value.customerId)),
+    not(isnull(local!value.accountNumber)),
+    len(http!request.pathSegments)&gt;0,
+    len(local!value.accountNumber)&lt;20
+  ),
+  if(
+    local!valueValid,
+    with(
+      local!query: #"SYSTEM_SYSRULES_queryEntity_v1"(
+        entity: #"_a-0000e1a5-9b5f-8000-9ba2-011c48011c48_1717118",
+        query: #"SYSTEM_SYSRULES_query"(
+          pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+            startIndex: 1,
+            batchSize: 1
+          ),
+          logicalExpression: #"SYSTEM_SYSRULES_queryLogicalExpression"(
+            operator: "AND",
+            filters: {
+              #"SYSTEM_SYSRULES_queryFilter"(
+                field: "app",
+                operator: "=",
+                value: http!request.pathSegments[1]
+              ),
+              #"SYSTEM_SYSRULES_queryFilter"(
+                field: "customerId",
+                operator: "=",
+                value: tointeger(local!value.customerId)
+              )
+            }
+          )
+        )
+      ),
+      #"SYSTEM_SYSRULES_writeToDataStoreEntity"(
+        dataStoreEntity: #"_a-0000e1a5-9b5f-8000-9ba2-011c48011c48_1717118",
+        valueToStore: 'type!{urn:com:appian:types:PDL}PDL_AccountNumber'(
+          id: index(local!query.data, "id", null),
+          app: http!request.pathSegments,
+          customerId: local!value.customerId,
+          accountNumber: local!value.accountNumber,
+          updatedOn: now()
+        ),
+        onSuccess: #"SYSTEM_SYSRULES_httpResponse_v1"(
+          statusCode: 200,
+          headers: {
+            #"SYSTEM_SYSRULES_httpHeader"(name: "Content-Type", value: "application/json")
+          },
+          body: #"SYSTEM_SYSRULES_toJson_v1"(value: {
+            successMessage: "Customer " &amp; fv!storedValues.customerId &amp; " has been updated successfully. New account number is " &amp; fv!storedValues.accountNumber }
+          )
+        ),
+        onError: #"SYSTEM_SYSRULES_httpResponse_v1"(
+          statusCode: 500,
+          headers: {
+            #"SYSTEM_SYSRULES_httpHeader"(name: "Content-Type", value: "application/json")
+          },
+          body: #"SYSTEM_SYSRULES_toJson_v1"(
+            {
+              error: "There was an error writing to the data store"
+            }
+          )
+        )
+      )),
+      #"SYSTEM_SYSRULES_httpResponse_v1"(
+        statusCode: 400,
+        headers: {
+          #"SYSTEM_SYSRULES_httpHeader"(name: "Content-Type", value: "application/json")
+        },
+        body: #"SYSTEM_SYSRULES_toJson_v1"(value: {
+          error: "There was a problem updating the customer account number",
+          details: if(
+            len(http!request.pathSegments)&lt;1,
+            "Please make sure to enter a relative path to the correct application",
+            if(
+              or(
+                isnull(local!value.customerId)
+                isnull(local!value.accountNumber)
+              ),
+              "The request is missing the accountNumber or customerId. Please make sure both values are included in the body of the request",
+              "The accountNumber is too long. Please make sure the accountNumber is 20 characters or less"
+            )
+          )}
+        )
+    )
+  )
+  
+  
+  
+  
+  
+  
+  
+  
+)</a:expression>
+        <a:urlAlias>account</a:urlAlias>
+        <a:httpMethod>POST</a:httpMethod>
+        <a:system>false</a:system>
+    </webApi>
+    <roleMap/>
+    <typedValue>
+        <type>
+            <name>WebApiRequest?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:path/>
+                <a:headers>
+                    <a:name>Content-Type</a:name>
+                    <a:value>application/json</a:value>
+                </a:headers>
+                <a:body>{}</a:body>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="9d4c9e21-baaf-408b-8ac8-c5fdca2aeddc"/>
+    </history>
+</webApiHaul>

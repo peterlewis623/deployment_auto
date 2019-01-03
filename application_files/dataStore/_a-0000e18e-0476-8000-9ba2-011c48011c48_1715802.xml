@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dataStoreHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1a5-9b5f-8000-9ba2-011c48011c48_1717115</versionUuid>
+    <dataStore>
+        <uuid>_a-0000e18e-0476-8000-9ba2-011c48011c48_1715802</uuid>
+        <name>PDL Sandbox Data Store</name>
+        <description></description>
+        <dataSourceKey>jdbc/Appian</dataSourceKey>
+        <adaptingExplicitSqlNames>false</adaptingExplicitSqlNames>
+        <autoUpdateSchema>false</autoUpdateSchema>
+        <entities>
+            <entity>
+                <uuid>06518fa8-bcd7-4c11-ad99-0d12b2b51ae0</uuid>
+                <name>banks</name>
+                <type>{urn:com:appian:types:PDL}PDL_Banks</type>
+            </entity>
+            <entity>
+                <uuid>a5cfcf01-fd0c-43f5-b723-dc9159f916f6</uuid>
+                <name>PDL_AccountNumber</name>
+                <type>{urn:com:appian:types:PDL}PDL_AccountNumber</type>
+            </entity>
+        </entities>
+    </dataStore>
+    <isPublished>true</isPublished>
+    <roleMap>
+        <role inherit="false" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1a5-9b5f-8000-9ba2-011c48011c48_1717115"/>
+    </history>
+</dataStoreHaul>

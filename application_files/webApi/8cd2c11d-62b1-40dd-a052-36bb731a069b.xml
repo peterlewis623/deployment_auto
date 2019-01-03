@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<webApiHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>e07fd82d-d97b-4b77-bd59-5cd14ede1b0e</versionUuid>
+    <webApi a:uuid="8cd2c11d-62b1-40dd-a052-36bb731a069b" name="PDL Bank Assets">
+        <a:description>Expose the top banks in the US through an API</a:description>
+        <a:expression>with(
+  /*
+  * Run the "queryEntity()" function on "cons!PDL_DSE_BANKS" to retrieve data for the
+  * first 50 data store entities and store this in a local variable named
+  * "local!entities".
+  */
+  local!entities: #"SYSTEM_SYSRULES_queryEntity_v1"(
+    entity: #"_a-0000e18e-0476-8000-9ba2-011c48011c48_1715860",
+    query: #"SYSTEM_SYSRULES_query"(
+      pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+        startIndex: 1,
+        batchSize: if(
+          isnull(http!request.queryParameters.batchSize),
+          -1,
+          http!request.queryParameters.batchSize
+        ),
+        sort: if(
+          http!request.queryParameters.sort="assets",
+          #"SYSTEM_SYSRULES_sortInfo"(
+            field: "assets",
+            ascending: false
+          ),
+          if(
+            http!request.queryParameters.sort="name",
+            #"SYSTEM_SYSRULES_sortInfo"(
+              field: "name",
+              ascending: true
+            ),
+            #"SYSTEM_SYSRULES_sortInfo"(
+              field: "id",
+              ascending: false
+            )
+          )
+        )
+      )
+    ),
+    fetchTotalCount: true
+  ).data,
+
+  /*
+  * Construct an HTTP response that contains the information that we just stored
+  * in "local!entities".
+  */
+  #"SYSTEM_SYSRULES_httpResponse_v1"(
+    /*
+    * Set an HTTP header that tells the client that the body of the response
+    * will be JSON-encoded.
+    */
+    headers: {
+      #"SYSTEM_SYSRULES_httpHeader"(name: "Content-Type", value: "application/json")
+    },
+    /*
+    * JSON-encode the value of "local!entities" and place it in the response body.
+    */
+    body: #"SYSTEM_SYSRULES_toJson_v1"(value: local!entities)
+  )
+)</a:expression>
+        <a:urlAlias>banks</a:urlAlias>
+        <a:httpMethod>GET</a:httpMethod>
+        <a:system>false</a:system>
+    </webApi>
+    <roleMap/>
+    <typedValue>
+        <type>
+            <name>WebApiRequest?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:path/>
+                <a:body/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="e07fd82d-d97b-4b77-bd59-5cd14ede1b0e"/>
+    </history>
+</webApiHaul>

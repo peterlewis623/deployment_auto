@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<webApiHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>361c4e7d-fb4e-4639-b2c1-cd8e4498b8da</versionUuid>
+    <webApi a:uuid="6d6f4ee9-948c-4dab-8c48-b1462cbacf44" name="PDL Get Account Number">
+        <a:description>Returns the account number for a given app and customer ID</a:description>
+        <a:expression>with(
+  local!entities: if(
+    and(
+      len(http!request.pathSegments)&gt;0,
+      not(isnull(http!request.queryParameters.customerId))
+    ),
+    #"SYSTEM_SYSRULES_queryEntity_v1"(
+    entity: #"_a-0000e1a5-9b5f-8000-9ba2-011c48011c48_1717118",
+    query: #"SYSTEM_SYSRULES_query"(
+      pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+        startIndex: 1,
+        batchSize: 1
+      ),
+      logicalExpression: #"SYSTEM_SYSRULES_queryLogicalExpression"(
+        operator: "AND",
+        filters: {
+          #"SYSTEM_SYSRULES_queryFilter"(
+            field: "app",
+            operator: "=",
+            value: http!request.pathSegments[1]
+          ),
+          #"SYSTEM_SYSRULES_queryFilter"(
+            field: "customerId",
+            operator: "=",
+            value: tointeger(http!request.queryParameters.customerId)
+          )
+        }
+      )
+    ),
+    fetchTotalCount: true
+  ),
+    null
+  ),
+  if(
+    or(
+      isnull(local!entities),
+      tointeger(index(
+        index(local!entities, "data", {}),
+        "totalCount",
+        0
+      ))=0
+    ),
+    #"SYSTEM_SYSRULES_httpResponse_v1"(
+      statusCode: 400,
+    headers: {
+      #"SYSTEM_SYSRULES_httpHeader"(name: "Content-Type", value: "application/json")
+    },
+
+    body: #"SYSTEM_SYSRULES_toJson_v1"(value: {error: "There was an error when retrieving the account number",
+    message: if(
+      len(http!request.pathSegments)&lt;1,
+      "No relative path for the application was found",
+      if(
+        isnull(http!request.queryParameters.customerId),
+        "No customerId parameter was found",
+        "No customer was found with ID " &amp; http!request.queryParameters.customerId
+      )
+        
+      )}
+    )
+    ),
+  #"SYSTEM_SYSRULES_httpResponse_v1"(
+    headers: {
+      #"SYSTEM_SYSRULES_httpHeader"(name: "Content-Type", value: "application/json")
+    },
+
+    body: #"SYSTEM_SYSRULES_toJson_v1"(value: local!entities.data)
+    )
+  )
+)</a:expression>
+        <a:urlAlias>account</a:urlAlias>
+        <a:httpMethod>GET</a:httpMethod>
+        <a:system>false</a:system>
+    </webApi>
+    <roleMap/>
+    <typedValue>
+        <type>
+            <name>WebApiRequest?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:path/>
+                <a:body/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="361c4e7d-fb4e-4639-b2c1-cd8e4498b8da"/>
+    </history>
+</webApiHaul>

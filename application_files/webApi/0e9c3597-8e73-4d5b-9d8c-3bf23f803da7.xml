@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<webApiHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>0f8c0cd7-8d41-426b-9f19-f87f1f584d9f</versionUuid>
+    <webApi a:uuid="0e9c3597-8e73-4d5b-9d8c-3bf23f803da7" name="PDL Test Legacy Data">
+        <a:description></a:description>
+        <a:expression>with(
+  #"SYSTEM_SYSRULES_httpResponse_v1"(
+    headers: {
+      #"SYSTEM_SYSRULES_httpHeader"(name: "Content-Type", value: "application/json")
+    },
+    body: #"SYSTEM_SYSRULES_toJson_v1"(
+      {    
+        tin: http!request.pathSegments[1],  
+        tinType: http!request.queryParameters.type,  
+        taxPeriod: http!request.queryParameters.period,  
+        agi: "86142",  
+        fedIncomeTax:"17228",
+        totalIncome: "86142",  
+        totalPayment: "17228",  
+        totalTax: "18090",  
+        wages: "86142"  
+      }
+    )
+  )
+)</a:expression>
+        <a:urlAlias>legacy-data-service</a:urlAlias>
+        <a:httpMethod>GET</a:httpMethod>
+        <a:system>false</a:system>
+    </webApi>
+    <roleMap/>
+    <typedValue>
+        <type>
+            <name>WebApiRequest?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:path>/1234567890</a:path>
+                <a:body/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="0f8c0cd7-8d41-426b-9f19-f87f1f584d9f"/>
+    </history>
+</webApiHaul>
