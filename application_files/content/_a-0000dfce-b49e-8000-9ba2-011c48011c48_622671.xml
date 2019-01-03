@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e142-f2f3-8000-9ba2-011c48011c48_1696492</versionUuid>
+    <rule>
+        <name>ICM_DisplaySurveyQuestions</name>
+        <uuid>_a-0000dfce-b49e-8000-9ba2-011c48011c48_622671</uuid>
+        <description>Given a list of questions, display the options to the user</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!responses: #"SYSTEM_SYSRULES_forEach"(
+    items: ri!questions,
+    expression: 'type!{urn:com:appian:types:ICM}ICM_SurveyResponse'(
+      questionId: fv!item.id,
+      answeredBy: loggedInUser()
+    )
+  ),
+  local!email,
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+    label: "Please answer the following survey",
+    contents: {
+      #"SYSTEM_SYSRULES_textField"(
+        label: "Please Enter your Email",
+        /*instructions: "Your Email is used so we can send you a certificate for the course",*/
+        value: local!email,
+        saveInto: local!email,
+        required: true
+      ),
+      #"SYSTEM_SYSRULES_sectionLayout_v1"(
+        contents: {
+          #"SYSTEM_SYSRULES_forEach"(
+            items: ri!questions,
+            expression: choose(
+              tointeger(fv!item.questionType),
+              #"SYSTEM_SYSRULES_paragraphField"(
+                label: fv!item.questionText,
+                value: local!responses[fv!index].answer,
+                saveInto: local!responses[fv!index].answer,
+                validations: if(
+                  len(local!responses[fv!index].answer)&gt;1000,
+                  "Please limit your response to 1000 characters. You have used " &amp; len(local!responses[fv!index].answer) &amp; ".",
+                  null
+                ),
+                height: "SHORT"
+              ),
+              #"SYSTEM_SYSRULES_radioButtonFieldByIndex"(
+                label: fv!item.questionText,
+                choiceLabels: enumerate(5)+1,
+                choiceLayout: "COMPACT",
+                value: local!responses[fv!index].answer,
+                saveInto: local!responses[fv!index].answer,
+                required: true,
+                instructions: "(1 is strongly disagree; 5 is strongly agree)"
+              )
+            )
+          )
+        }
+      )
+    },
+    buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+      primaryButtons: {
+        #"SYSTEM_SYSRULES_ButtonWidget"(
+          label: "Submit",
+          saveInto: {
+            a!save(
+              target: ri!responses,
+              value: #"SYSTEM_SYSRULES_forEach"(
+                items: local!responses,
+                expression: 'type!{urn:com:appian:types:ICM}ICM_SurveyResponse'(
+                  questionId: fv!item.questionId,
+                  answer: fv!item.answer,
+                  studentName: user(loggedInUser(), "firstName") &amp; " " &amp; user(loggedInUser(), "lastName"),
+                  email: local!email,
+                  className: ri!className,
+                  customer: ri!customer,
+                  instructor: ri!instructor
+                )
+              )
+            )
+          },
+          submit: true,
+          style: "PRIMARY"
+        )
+      }
+    )
+  )
+  
+)</definition>
+        <namedTypedValue>
+            <name>questions</name>
+            <type>
+                <name>ICM_SurveyQuestion?list</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>responses</name>
+            <type>
+                <name>ICM_SurveyResponse?list</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>className</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>customer</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>instructor</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <typedValue>
+        <type>
+            <name>RuleTestConfig?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:name/>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:Expression">#"59601d00-f26d-40e1-85ab-f11a55a061b0"(4).result.body</a:value>
+                    <a:nameRef>questions</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:nameRef>responses</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">Lead Designer</a:value>
+                    <a:nameRef>className</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">Appian</a:value>
+                    <a:nameRef>customer</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">Chuck Norries</a:value>
+                    <a:nameRef>instructor</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:assertions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623299"/>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623319"/>
+        <historyInfo versionUuid="_a-0000e046-0511-8000-9ba2-011c48011c48_947457"/>
+        <historyInfo versionUuid="_a-0000e076-41cd-8000-9ba2-011c48011c48_1064740"/>
+        <historyInfo versionUuid="_a-0000e0d4-3116-8000-9ba2-011c48011c48_1561309"/>
+        <historyInfo versionUuid="_a-0000e131-ba6f-8000-9ba2-011c48011c48_1694848"/>
+        <historyInfo versionUuid="_a-0000e142-f2f3-8000-9ba2-011c48011c48_1696492"/>
+    </history>
+</contentHaul>

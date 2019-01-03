@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e142-f2f3-8000-9ba2-011c48011c48_1696584</versionUuid>
+    <constant>
+        <name>ICM_CLASS_GROUP_NAMES</name>
+        <uuid>_a-0000ddb0-5b89-8000-3457-01ef9001ef90_2883</uuid>
+        <description>Group names for classes to make sure there are no repeated names of groups</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3579</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <typedValue>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+            <value>
+                <el/>
+                <el>CLASS - Oct 10</el>
+                <el>CLASS - Oct 11</el>
+                <el>CLASS - Nov 07</el>
+                <el>CLASS - Nov 28</el>
+                <el>CLASS - Nov 29</el>
+                <el>CLASS - Nov 30</el>
+                <el>Jenny Class</el>
+                <el>CLASS - Oct 02</el>
+                <el>Survey Test Class</el>
+                <el>CLASS - Feb 26</el>
+                <el>CLASS - Test</el>
+                <el>CLASS - Mar 26</el>
+                <el>CLASS - Apr 23</el>
+                <el>CLASS - Apr 16</el>
+                <el>CLASS - Apr 30</el>
+                <el>CLASS - Aug 20</el>
+                <el>CLASS - Aug 27</el>
+                <el>CLASS - Aug 28</el>
+                <el>CLASS - Sep 10</el>
+                <el>CNA -- Sep 24</el>
+            </value>
+        </typedValue>
+        <isEnvironmentSpecific>false</isEnvironmentSpecific>
+    </constant>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000df8e-b6d8-8000-9ba2-011c48011c48_23990"/>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623278"/>
+        <historyInfo versionUuid="_a-0000e046-0511-8000-9ba2-011c48011c48_942748"/>
+        <historyInfo versionUuid="_a-0000e046-0511-8000-9ba2-011c48011c48_946828"/>
+        <historyInfo versionUuid="_a-0000e076-41cd-8000-9ba2-011c48011c48_1064783"/>
+        <historyInfo versionUuid="_a-0000e142-f2f3-8000-9ba2-011c48011c48_1696093"/>
+        <historyInfo versionUuid="_a-0000e142-f2f3-8000-9ba2-011c48011c48_1696584"/>
+    </history>
+</contentHaul>

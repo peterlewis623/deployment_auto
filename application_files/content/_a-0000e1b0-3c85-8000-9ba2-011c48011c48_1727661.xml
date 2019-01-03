@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1729009</versionUuid>
+    <rule>
+        <name>ICM_ManageTopics</name>
+        <uuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727661</uuid>
+        <description>Interface to help manage topics</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!selectedTopic:null,
+  local!umbrella,
+  local!newTopic,
+  with(
+    local!questions: #"eb6c9471-976a-435f-852d-0cf193e7e2c7"("question",local!selectedTopic,null).result.body,
+    local!umbrellaQuestions: #"eb6c9471-976a-435f-852d-0cf193e7e2c7"("question",local!umbrella,null).result.body,
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+    label: "Manage Topics",
+    contents: {
+  #"SYSTEM_SYSRULES_columnsLayout"(
+    columns: {
+      #"SYSTEM_SYSRULES_columnLayout"(
+        contents: {
+          #"SYSTEM_SYSRULES_dropdownField"(
+            label: "Topic",
+            labelPosition: "ABOVE",
+            placeholderLabel: "--- Select a Value ---",
+            choiceLabels: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47697",
+            choiceValues: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47697",
+            value: local!selectedTopic,
+            saveInto: local!selectedTopic,
+            required: true,
+            validations: {}
+          ),
+          #"SYSTEM_SYSRULES_gridLayout"(
+            label: "Questions Related to the Topic",
+            labelPosition: "ABOVE",
+            headerCells: {
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Question")
+            },
+            columnConfigs: {},
+            rows: if(
+              or(isnull(local!selectedTopic),len(local!questions)&lt;1),
+              null,
+              #"SYSTEM_SYSRULES_forEach"(
+              items: local!questions.question,
+              expression: #"SYSTEM_SYSRULES_gridRowLayout"(
+                contents: {
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Text",
+                    labelPosition: "ABOVE",
+                    value: fv!item,
+                    saveInto: {},
+                    refreshAfter: "UNFOCUS",
+                    readOnly: true,
+                    validations: {}
+                  )
+                }
+              )
+            )
+            ),
+            selectionSaveInto: {},
+            validations: {},
+            shadeAlternateRows: true
+          )
+        }
+      ),
+      #"SYSTEM_SYSRULES_columnLayout"(
+        contents: {
+          #"SYSTEM_SYSRULES_dropdownField"(
+            label: "Umbrella Topic",
+            labelPosition: "ABOVE",
+            placeholderLabel: "--- Select a Value ---",
+            choiceLabels: {"Not Listed", #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47697"},
+            choiceValues: {"Not Listed", #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47697"},
+            value: local!umbrella,
+            saveInto: local!umbrella,
+            required: true,
+            validations: {}
+          ),
+          if(
+            local!umbrella="Not Listed",
+          #"SYSTEM_SYSRULES_textField"(
+            label: "New Topic",
+            labelPosition: "ABOVE",
+            value: local!newTopic,
+            saveInto: local!newTopic,
+            refreshAfter: "UNFOCUS",
+            required: true,
+            validations: {}
+          ),
+          #"SYSTEM_SYSRULES_gridLayout"(
+            label: "Questions Related to the Topic",
+            labelPosition: "ABOVE",
+            headerCells: {
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Question")
+            },
+            columnConfigs: {},
+            rows: if(
+              or(isnull(local!umbrella),len(local!questions)&lt;1),
+              null,
+              #"SYSTEM_SYSRULES_forEach"(
+              items: local!umbrellaQuestions.question,
+              expression: #"SYSTEM_SYSRULES_gridRowLayout"(
+                contents: {
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Text",
+                    labelPosition: "ABOVE",
+                    value: fv!item,
+                    saveInto: {},
+                    refreshAfter: "UNFOCUS",
+                    readOnly: true,
+                    validations: {}
+                  )
+                }
+              )
+            )
+            ),
+            selectionSaveInto: {},
+            validations: {},
+            shadeAlternateRows: true
+          )
+          ),
+          #"SYSTEM_SYSRULES_radioButtonField"(
+            label: "Keep Topic",
+            labelPosition: "ABOVE",
+            instructions: "Selecting 'No' will remove the topic from future use",
+            choiceLabels: {"Yes","No"},
+            choiceValues: {true,false},
+            value: ri!keepTopic,
+            saveInto: ri!keepTopic,
+            showwhen: true,
+            required: true,
+            choiceLayout: "COMPACT",
+            validations: {}
+          )
+        }
+      )
+    }
+      ),
+      #"SYSTEM_SYSRULES_ButtonArrayLayout"(
+        buttons: {
+          #"SYSTEM_SYSRULES_ButtonWidget"(
+            label: "Submit",
+            confirmheader: "Permanently Change Topics",
+            confirmmessage: if(
+              local!umbrella="Not Listed",
+              "You are about to change all the questions of the topic '" &amp; local!selectedTopic &amp; "' to '" &amp; local!newTopic &amp;"' are you sure you want to do this?",
+              "You are about to change all the questions of the topic '" &amp; local!selectedTopic &amp; "' to '" &amp; local!umbrella &amp;"' are you sure you want to do this?"
+            ),
+            saveinto: {
+              a!save(
+                target: ri!oldTopic,
+                value: local!selectedTopic
+              ),
+              a!save(
+                target: ri!newTopic,
+                value: if(
+                  local!umbrella= "Not Listed",
+                  local!newTopic,
+                  local!umbrella
+                )
+              )
+            },
+            submit: true,
+            style: "NORMAL"
+          )
+        },
+        align: "END"
+      )
+}
+)
+)
+)</definition>
+        <namedTypedValue>
+            <name>oldTopic</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>newTopic</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>keepTopic</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1729009"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e142-f2f3-8000-9ba2-011c48011c48_1696491</versionUuid>
+    <rule>
+        <name>ICM_AddQuestions</name>
+        <uuid>_a-0000e076-41cd-8000-9ba2-011c48011c48_1065999</uuid>
+        <description>Add new quiz questions to the app</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!question: 'type!{urn:com:appian:types:ICM}ICM_Question'(
+    type: 1
+  ),
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+    label: "Add New Questions",
+    contents: {
+      #"SYSTEM_SYSRULES_sectionLayout_v1"(
+        contents: {
+          #"SYSTEM_SYSRULES_columnsLayout"(
+            columns: {
+              #"SYSTEM_SYSRULES_columnLayout"(
+                contents: {
+                  #"SYSTEM_SYSRULES_dropdownField"(
+                    label: "Question Type",
+                    choiceLabels: #"_a-0000e076-41cd-8000-9ba2-011c48011c48_1066005",
+                    choiceValues: enumerate(count(#"_a-0000e076-41cd-8000-9ba2-011c48011c48_1066005"))+1,
+                    value: local!question.type,
+                    saveInto: local!question.type,
+                    required: true
+                  ),
+                  #"SYSTEM_SYSRULES_paragraphField"(
+                    label: "Question Text",
+                    value: local!question.questionText,
+                    saveInto: local!question.questionText,
+                    required: true
+                  )
+                },
+                width: "MEDIUM"
+              ),
+              #"SYSTEM_SYSRULES_columnLayout"(
+                contents: {
+                  #"SYSTEM_SYSRULES_gridLayout"(
+                    label: "Answers",
+                    headerCells: {
+                      #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: ""),
+                      #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Option Text"),
+                      #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: ""),
+                      #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: ""),
+                      #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "")
+                    },
+                    columnConfigs: {
+                      #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width: "ICON"),
+                      #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width: "DISTRIBUTE"),
+                      #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width: "ICON"),
+                      #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width: "ICON"),
+                      #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width: "ICON")
+                    },
+                    rows: #"SYSTEM_SYSRULES_forEach"(
+                      items: local!question.options,
+                      expression: with(
+                        local!option: fv!item,
+                        local!optionIndex: fv!index,
+                        #"SYSTEM_SYSRULES_gridRowLayout"(
+                          id: fv!index,
+                          contents: {
+                            #"SYSTEM_SYSRULES_richTextDisplayField"(
+                              value: #"SYSTEM_SYSRULES_richTextIcon"(
+                                icon: if(
+                                  local!option.correct=true,
+                                  "check-circle",
+                                  "circle"
+                                ),
+                                link: #"SYSTEM_SYSRULES_dynamicLink"(
+                                  saveInto: if(
+                                    local!question.type=3,
+                                    a!save(
+                                      target: local!option.correct,
+                                      value: local!option.correct&lt;&gt;true
+                                    ),
+                                    {
+                                      a!save(
+                                        target: local!question.options,
+                                        value: #"SYSTEM_SYSRULES_forEach"(
+                                          items: local!question.options,
+                                          expression: 'type!{urn:com:appian:types:ICM}ICM_QuestionOption'(
+                                            text: fv!item.text,
+                                            correct: fv!index=local!optionIndex,
+                                            order: fv!item.order
+                                          )
+                                        )
+                                      )
+                                    }
+                                  )
+                                ),
+                                linkStyle: "STANDALONE",
+                                color: if(
+                                  local!option.correct=true,
+                                  "POSITIVE",
+                                  "STANDARD"
+                                ),
+                                size: "MEDIUM"
+                              )
+                            ),
+                            #"SYSTEM_SYSRULES_textField"(
+                              value: local!option.text,
+                              saveInto: local!option.text
+                            ),
+                            #"SYSTEM_SYSRULES_richTextDisplayField"(
+                              value: #"SYSTEM_SYSRULES_richTextIcon"(
+                                icon: "arrow-up",
+                                link: #"SYSTEM_SYSRULES_dynamicLink"(
+                                  saveInto: a!save(
+                                    target: local!question.options,
+                                    value: updatearray(
+                                      local!question.options,
+                                      {fv!index, fv!index-1},
+                                      {local!question.options[fv!index-1], fv!item}
+                                    )
+                                  ),
+                                  showWhen: not(fv!isFirst)
+                                ),
+                                linkStyle: "STANDALONE",
+                                color: if(
+                                  fv!isFirst,
+                                  "SECONDARY",
+                                  "STANDARD"
+                                ),
+                                size: "MEDIUM"
+                              )
+                            ),
+                            #"SYSTEM_SYSRULES_richTextDisplayField"(
+                              value: value: #"SYSTEM_SYSRULES_richTextIcon"(
+                                icon: "arrow-down",
+                                color: if(
+                                  fv!isLast,
+                                  "SECONDARY",
+                                  "STANDARD"
+                                ),
+                                link: #"SYSTEM_SYSRULES_dynamicLink"(
+                                  saveInto: a!save(
+                                    target: local!question.options,
+                                    value: updatearray(
+                                      local!question.options,
+                                      {fv!index, fv!index+1},
+                                      {local!question.options[fv!index+1], fv!item}
+                                    )
+                                  ),
+                                  showWhen: not(fv!isLast)
+                                ),
+                                linkStyle: "STANDALONE",
+                                size: "MEDIUM"
+                              )
+                            ),
+                            #"SYSTEM_SYSRULES_richTextDisplayField"(
+                              value: #"SYSTEM_SYSRULES_richTextIcon"(
+                                icon: "remove",
+                                link: #"SYSTEM_SYSRULES_dynamicLink"(
+                                  saveInto: a!save(
+                                    target: local!question.options,
+                                    value: remove(
+                                      local!question.options,
+                                      fv!index
+                                    )
+                                  )
+                                ),
+                                linkStyle: "STANDALONE",
+                                color: "NEGATIVE",
+                                size: "MEDIUM"
+                              )
+                            )
+                          }
+                        )
+                      )
+                    ),
+                    showWhen: or(
+                      local!question.type=2,
+                      local!question.type=3
+                    ),
+                    addRowLink: #"SYSTEM_SYSRULES_dynamicLink"(
+                      label: "Add Answer",
+                      value: 'type!{urn:com:appian:types:ICM}ICM_QuestionOption'(),
+                      saveInto: a!save(
+                        target: local!question.options,
+                        value: append(local!question.options, save!value)
+                      )
+                      
+                    )
+                  )
+                }
+              )
+            }
+          )
+          
+        },
+        divider: "BELOW"
+      ),
+      #"SYSTEM_SYSRULES_linkField"(
+        labelPosition: "COLLAPSED",
+        links: #"SYSTEM_SYSRULES_dynamicLink"(
+          label: "+ New Question",
+          saveInto: {
+            a!save(
+              target: ri!questions,
+              value: append(ri!questions, local!question)
+            ),
+            a!save(
+              target: local!question,
+              value: 'type!{urn:com:appian:types:ICM}ICM_Question'(
+                type: 1
+              )
+            )
+          }
+        )
+      ),
+      #"SYSTEM_SYSRULES_sectionLayout_v1"(
+        contents: {
+          #"SYSTEM_SYSRULES_gridLayout"(
+            label: "Questions to Add",
+            labelPosition: "ABOVE",
+            headerCells: {
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Question"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Type"
+              ),
+            },
+            columnConfigs: {
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "DISTRIBUTE",
+                weight: 2
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "DISTRIBUTE"
+              ),
+            },
+            rows: #"SYSTEM_SYSRULES_forEach"(
+              items: ri!questions,
+              expression: #"SYSTEM_SYSRULES_gridRowLayout"(
+                id: fv!index,
+                contents: {
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    value: fv!item.questionText,
+                    readOnly: true
+                  ),
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    value: index(
+                      #"_a-0000e076-41cd-8000-9ba2-011c48011c48_1066005",
+                      fv!item.type,
+                      null
+                    )
+                  ),
+                }
+              )
+            ),
+            selectionSaveInto: {},
+            validations: {},
+            shadeAlternateRows: true
+          )
+        }
+      )
+    },
+    buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+      primaryButtons: {
+        #"SYSTEM_SYSRULES_ButtonWidget"(
+          label: "Submit",
+          style: "PRIMARY",
+          submit: true
+        )
+      }
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>questions</name>
+            <type>
+                <name>ICM_Question?list</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0b7-133c-8000-9ba2-011c48011c48_1183737"/>
+        <historyInfo versionUuid="_a-0000e142-f2f3-8000-9ba2-011c48011c48_1696491"/>
+    </history>
+</contentHaul>

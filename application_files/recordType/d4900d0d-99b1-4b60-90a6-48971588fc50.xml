@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>dbdd8221-2bce-4072-a937-617f1e7204e8</versionUuid>
+  <recordType a:uuid="d4900d0d-99b1-4b60-90a6-48971588fc50" name="ICM Training Classes">
+    <a:pluralName>Training Classes</a:pluralName>
+    <a:description>All training classes in the system</a:description>
+    <a:urlStub>JXVuEg</a:urlStub>
+    <a:source a:uuid="0002dd3d-39d1-8000-aae2-014d98014d98" xsi:type="a:ProcessModel"/>
+    <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_listViewItem"(
+  title: group(rf!CreatedGroup, "groupName"),
+  details: "Total Students: "&amp;length(getdistinctusers(rf!CreatedGroup)),
+  image: #"SYSTEM_SYSRULES_iconNewsEvent"(
+    icon: "PRESENTATION",
+    color: if(rf!startDate&gt;today(),
+           "GREY",
+           "GREEN"
+          
+    )
+  ),
+  timestamp: rf!startDate
+)</a:listViewTemplateExpr>
+    <a:detailViewCfg>
+      <a:nameExpr>="Summary"</a:nameExpr>
+      <a:uiExpr>#"_a-0000dda2-60dc-8000-aae2-01ef9001ef90_2880"(
+  group: rf!CreatedGroup,
+  startDate: rf!startDate,
+  password: rf!password
+)</a:uiExpr>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>summary</a:urlStub>
+      <a:headerExpr/>
+      <a:relatedActionCfg>a7b35d50-6220-4718-a740-dd037b1b17b5</a:relatedActionCfg>
+      <a:relatedActionCfg>cad46814-6963-40b7-88c5-4c1583dc6614</a:relatedActionCfg>
+      <a:relatedActionCfg>7c1acb11-d7cc-466d-aafc-94057daa791b</a:relatedActionCfg>
+    </a:detailViewCfg>
+    <a:defaultFilter>
+      <a:field>CreatedGroup</a:field>
+      <a:operator>not null</a:operator>
+      <a:valueExpression/>
+    </a:defaultFilter>
+    <a:defaultSortInfo>
+      <field>startDate</field>
+      <ascending>true</ascending>
+    </a:defaultSortInfo>
+    <a:relatedActionCfg>
+      <a:target a:uuid="0002dda5-ac76-8000-aae2-014d98014d98" xsi:type="a:ProcessModel"/>
+      <a:contextExpr>{students: getdistinctusers(rf!CreatedGroup),
+ group: rf!CreatedGroup
+}</a:contextExpr>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:iconId>f0e7</a:iconId>
+      <a:refId>a7b35d50-6220-4718-a740-dd037b1b17b5</a:refId>
+    </a:relatedActionCfg>
+    <a:relatedActionCfg>
+      <a:target a:uuid="0002dda7-a0c8-8000-aae2-014d98014d98" xsi:type="a:ProcessModel"/>
+      <a:contextExpr>{group: rf!CreatedGroup,
+ entryId: rf!EntryId
+}</a:contextExpr>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:iconId>f0e7</a:iconId>
+      <a:refId>cad46814-6963-40b7-88c5-4c1583dc6614</a:refId>
+    </a:relatedActionCfg>
+    <a:relatedActionCfg>
+      <a:target a:uuid="0002dd81-301a-8000-aae2-014d98014d98" xsi:type="a:ProcessModel"/>
+      <a:contextExpr>{}</a:contextExpr>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:iconId>f0e7</a:iconId>
+      <a:refId>0ff008a3-cf2f-4c7c-990c-2651d17b8722</a:refId>
+    </a:relatedActionCfg>
+    <a:relatedActionCfg>
+      <a:target a:uuid="0002e01c-93a1-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+      <a:contextExpr>{
+  classGroup: rf!CreatedGroup, /* Group */
+  questions: null /* ICM_SurveyQuestion?list */
+}</a:contextExpr>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:iconId>f00b</a:iconId>
+      <a:refId>7c1acb11-d7cc-466d-aafc-94057daa791b</a:refId>
+      <a:staticTitleString>Start Survey</a:staticTitleString>
+      <a:staticDescriptionString>Begin a survey to send to the class. You can select the survey questions in the next window</a:staticDescriptionString>
+    </a:relatedActionCfg>
+    <a:relatedActionCfg>
+      <a:target a:uuid="0002e0db-8ba8-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+      <a:contextExpr>{
+  courseName: rf!courseName, /* Text */
+  instructorName: rf!instructorName, /* Text */
+  startDate: rf!startDate, /* Date */
+  endDate: rf!startDate+4, /* Date */
+  students: rf!students /* ICM_studentGrid?list */
+}</a:contextExpr>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:iconId>f0e7</a:iconId>
+      <a:refId>44d32fee-7905-422e-bf07-2beab45ef480</a:refId>
+      <a:staticTitleString>Create Sign-In Sheet</a:staticTitleString>
+      <a:staticDescriptionString>Create a Sign-In Sheet to use in class. Note: this will only work for up to 15 students</a:staticDescriptionString>
+    </a:relatedActionCfg>
+    <a:isSystem>false</a:isSystem>
+    <a:dataSrcExpr/>
+    <a:facetsListExpr/>
+    <a:titleExpr/>
+    <a:defaultFiltersExpr/>
+    <a:layoutType>FEED</a:layoutType>
+    <a:security>16383</a:security>
+    <a:hideLatestNews>false</a:hideLatestNews>
+    <a:isExportable>true</a:isExportable>
+    <a:listViewSrcExpr/>
+    <a:recordViewSrcExpr/>
+  </recordType>
+  <roleMap>
+    <role name="record_type_administrator">
+      <users/>
+      <groups>
+        <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+      </groups>
+    </role>
+  </roleMap>
+  <history>
+    <historyInfo versionUuid="4194a522-3382-4559-855c-75684c5bd471"/>
+    <historyInfo versionUuid="d6bec628-7d3c-4fe8-b689-7ff308fa74e7"/>
+    <historyInfo versionUuid="c86348f8-44ba-46e0-8167-48db350fa214"/>
+    <historyInfo versionUuid="dbdd8221-2bce-4072-a937-617f1e7204e8"/>
+  </history>
+  <migrationVersion>1</migrationVersion>
+</recordTypeHaul>

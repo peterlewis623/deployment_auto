@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727998</versionUuid>
+    <rule>
+        <name>ICM_Roster</name>
+        <uuid>_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_34920</uuid>
+        <description>Interface for creating and editing the roster</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!students: #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722515"(),
+  local!newStudents: #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722463"(),
+  local!absent,
+  local!instructor: user(loggedInUser(),"firstName"),
+  local!sent: length(#"_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42469"().data)&gt;0,
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+  label:"Send Monday Roster",
+  contents: {
+      if(
+        local!sent,
+        #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727345"(null,local!sent),
+        #"SYSTEM_SYSRULES_sectionLayout_v1"(
+      label: "",
+      contents: {
+    #"SYSTEM_SYSRULES_columnsLayout"(
+      columns: {
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Instructor Name",
+              labelPosition: "ABOVE",
+              value: local!instructor,
+              saveInto: local!instructor,
+              refreshAfter: "UNFOCUS",
+              required: true,
+              validations: if(
+                or(like(upper(local!instructor),"*SYSTEM*"),like(upper(local!instructor),"*ADMIN*")),
+                "You must use your real name",
+                null
+              )
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Class Name",
+              labelPosition: "ABOVE",
+              placeholder: "KMPG Spain Designer",
+              value: ri!class,
+              saveInto: ri!class,
+              refreshAfter: "UNFOCUS",
+              required: true,
+              validations: {}
+            )
+          }
+        )
+      }
+    ),
+    #"SYSTEM_SYSRULES_columnsLayout"(
+      columns: {
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_gridLayout"(
+            label: "On Forum",
+            labelPosition: "ABOVE",
+            headerCells: {
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Name"),
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Mark New",
+                align: "CENTER"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Mark Absent",
+                align: "CENTER"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Remove",
+                align: "CENTER"
+              )
+            },
+            columnConfigs: {
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "DISTRIBUTE"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "NARROW"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "NARROW"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "NARROW"
+              )
+            },
+            rows: {
+              #"SYSTEM_SYSRULES_forEach"(
+                items: local!students,
+              expression: #"SYSTEM_SYSRULES_gridRowLayout"(
+                contents: {
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Text",
+                    labelPosition: "ABOVE",
+                    value: fv!item,
+                    saveInto: {},
+                    refreshAfter: "UNFOCUS",
+                    readonly: true,
+                    validations: {}
+                  ),
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    label: "Rich Text",
+                    labelPosition: "ABOVE",
+                    value: {
+                      #"SYSTEM_SYSRULES_richTextIcon"(
+                        icon: "sign-in",
+                        link: #"SYSTEM_SYSRULES_dynamicLink"(
+                          label: "Dynamic Link",
+                          saveInto: {
+                            a!save(
+                              target: local!newStudents,
+                              value: append(local!newStudents,fv!item)
+                            ),
+                            a!save(
+                              target: local!students,
+                              value: remove(local!students,fv!index)
+                            )
+                          }
+                        ),
+                        color: "#8800AA"
+                      )
+                    },
+                    align: "CENTER"
+                  ),
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    label: "Rich Text",
+                    labelPosition: "ABOVE",
+                    value: {
+                      #"SYSTEM_SYSRULES_richTextIcon"(
+                        icon: "user-times",
+                        link: #"SYSTEM_SYSRULES_dynamicLink"(
+                          label: "Dynamic Link",
+                          saveInto: {
+                            a!save(
+                              target: local!absent,
+                              value: append(local!absent,fv!item)
+                            ),
+                            a!save(
+                              target: local!students,
+                              value: remove(local!students,fv!index)
+                            )
+                          }
+                        ),
+                        color: "#880000"
+                      )
+                    },
+                    align: "CENTER"
+                  ),
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    label: "Rich Text",
+                    labelPosition: "ABOVE",
+                    value: {
+                      #"SYSTEM_SYSRULES_richTextIcon"(
+                        icon: "times",
+                        link: #"SYSTEM_SYSRULES_dynamicLink"(
+                          label: "Dynamic Link",
+                          saveInto: {
+                            a!save(
+                              target: local!students,
+                              value: remove(local!students,fv!index)
+                            )
+                          }
+                        ),
+                        color: "#DD0000"
+                      )
+                    },
+                    align: "CENTER"
+                  )
+                }
+              )
+              )
+            },
+            selectionSaveInto: {},
+            validations: {},
+            shadeAlternateRows: true
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_gridLayout"(
+            label: "Absent",
+            labelPosition: "ABOVE",
+            headerCells: {
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Name"),
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Mark on Forum",
+                align: "CENTER"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Remove",
+                align: "CENTER"
+              )
+            },
+            columnConfigs: {
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "DISTRIBUTE"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "NARROW"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "NARROW"
+              )
+            },
+            rows: {
+              #"SYSTEM_SYSRULES_forEach"(
+                items: local!absent,
+              expression: #"SYSTEM_SYSRULES_gridRowLayout"(
+                contents: {
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Text",
+                    labelPosition: "ABOVE",
+                    value: fv!item,
+                    saveInto: {},
+                    refreshAfter: "UNFOCUS",
+                    readonly: true,
+                    validations: {}
+                  ),
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    label: "Rich Text",
+                    labelPosition: "ABOVE",
+                    value: {
+                      #"SYSTEM_SYSRULES_richTextIcon"(
+                        icon: "user-plus",
+                        link: #"SYSTEM_SYSRULES_dynamicLink"(
+                          label: "Dynamic Link",
+                          saveInto: {
+                            
+                            a!save(
+                              target: local!students,
+                              value: append(local!absent,fv!item)
+                            ),
+                            a!save(
+                              target: local!absent,
+                              value: remove(local!absent,fv!index)
+                            )
+                          }
+                        ),
+                        color: "#228822"
+                      )
+                    },
+                    align: "CENTER"
+                  ),
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    label: "Rich Text",
+                    labelPosition: "ABOVE",
+                    value: {
+                      #"SYSTEM_SYSRULES_richTextIcon"(
+                        icon: "times",
+                        link: #"SYSTEM_SYSRULES_dynamicLink"(
+                          label: "Dynamic Link",
+                          saveInto: {
+                            a!save(
+                              target: local!absent,
+                              value: remove(local!absent,fv!index)
+                            )
+                          }
+                        ),
+                        color: "#DD0000"
+                      )
+                    },
+                    align: "CENTER"
+                  )
+                }
+              )
+              )
+            },
+            selectionSaveInto: {},
+            validations: {},
+            shadeAlternateRows: true
+            ),
+            #"SYSTEM_SYSRULES_gridLayout"(
+            label: "New",
+            labelPosition: "ABOVE",
+            headerCells: {
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Name"),
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Mark on Forum",
+                align: "CENTER"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                label: "Remove",
+                align: "CENTER"
+              )
+            },
+            columnConfigs: {
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "DISTRIBUTE"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "NARROW"
+              ),
+              #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                width: "NARROW"
+              )
+            },
+            rows: {
+              #"SYSTEM_SYSRULES_forEach"(
+                items: local!newStudents,
+              expression: #"SYSTEM_SYSRULES_gridRowLayout"(
+                contents: {
+                  #"SYSTEM_SYSRULES_textField"(
+                    label: "Text",
+                    labelPosition: "ABOVE",
+                    value: fv!item,
+                    saveInto: {},
+                    refreshAfter: "UNFOCUS",
+                    readonly: true,
+                    validations: {}
+                  ),
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    label: "Rich Text",
+                    labelPosition: "ABOVE",
+                    value: {
+                      #"SYSTEM_SYSRULES_richTextIcon"(
+                        icon: "user-plus",
+                        link: #"SYSTEM_SYSRULES_dynamicLink"(
+                          label: "Dynamic Link",
+                          saveInto: {
+                            a!save(
+                              target: local!students,
+                              value: append(local!students,fv!item)
+                            ),
+                            a!save(
+                              target: local!newStudents,
+                              value: remove(local!newStudents,fv!index)
+                            )
+                          }
+                        ),
+                        color: "#228822"
+                      )
+                    },
+                    align: "CENTER"
+                  ),
+                  #"SYSTEM_SYSRULES_richTextDisplayField"(
+                    label: "Rich Text",
+                    labelPosition: "ABOVE",
+                    value: {
+                      #"SYSTEM_SYSRULES_richTextIcon"(
+                        icon: "times",
+                        link: #"SYSTEM_SYSRULES_dynamicLink"(
+                          label: "Dynamic Link",
+                          saveInto: {
+                            a!save(
+                              target: local!newStudents,
+                              value: remove(local!newStudents,fv!index)
+                            )
+                          }
+                        ),
+                        color: "#DD0000"
+                      )
+                    },
+                    align: "CENTER"
+                  )
+                }
+              )
+              )
+            },
+            selectionSaveInto: {},
+            validations: {},
+            shadeAlternateRows: true
+            )
+          }
+        )
+      }
+    )
+},
+    showWhen: not(local!sent)
+    )
+        ),
+    
+  },
+  buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+    primaryButtons: load(
+      local!submitted: length(#"_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42469"().data)&gt;0,
+      #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+      label: "Submit",
+      confirmHeader: if(
+        local!submitted,
+        "Warning",
+        null
+      ),
+      confirmMessage: if(
+        local!submitted,
+        "You have already sent the roster, are you sure you want to send it again?",
+        null
+      ),
+      confirmButtonLabel: if(
+        local!submitted,
+        "Yes, resubmit the roster",
+        null
+      ),
+      saveInto: {
+        a!save(
+          target: ri!present,
+          value: local!students
+        ),
+        a!save(
+          target: ri!absent,
+          value: local!absent
+        ),
+        a!save(
+          target: ri!newStudents,
+          value: local!newStudents
+        ),
+        a!save(
+          target: ri!instructor,
+          value: local!instructor
+        )
+      },
+      showWhen: not(local!sent)
+      )
+    )
+  )
+)
+)</definition>
+        <namedTypedValue>
+            <name>present</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>absent</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>newStudents</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>instructor</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>class</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42148"/>
+        <historyInfo versionUuid="_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42167"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722634"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722846"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727403"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727998"/>
+    </history>
+</contentHaul>

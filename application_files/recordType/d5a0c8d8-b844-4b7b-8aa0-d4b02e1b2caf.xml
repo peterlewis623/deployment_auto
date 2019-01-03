@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>f12ae98f-bfd3-4290-83bc-9ef08a5c9879</versionUuid>
+  <recordType a:uuid="d5a0c8d8-b844-4b7b-8aa0-d4b02e1b2caf" name="ICM Add New Student">
+    <a:pluralName>ICM Add New Students</a:pluralName>
+    <a:description>Process backed record of new students added</a:description>
+    <a:urlStub>-WNdmA</a:urlStub>
+    <a:source a:uuid="0002dda7-a0c8-8000-aae2-014d98014d98" xsi:type="a:ProcessModel"/>
+    <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_recordGridLayoutColumns"(
+  pageSize: 50,
+  defaultSort: #"SYSTEM_SYSRULES_sortInfo"(
+    field: "entryId",
+    ascending: fn!true()
+  ),
+  columns: {
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Entry Id",
+      field: "entryId",
+      component: #"SYSTEM_SYSRULES_recordGrid_linkField"(
+        links: #"SYSTEM_SYSRULES_recordLink"(
+          label: rf!entryId,
+          recordType: rp!type,
+          identifier: rp!id
+        )
+      )
+    )
+  },
+  shadeAlternateRows: true
+)</a:listViewTemplateExpr>
+    <a:detailViewCfg>
+      <a:nameExpr>="Summary"</a:nameExpr>
+      <a:uiExpr/>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>summary</a:urlStub>
+      <a:headerExpr/>
+    </a:detailViewCfg>
+    <a:isSystem>false</a:isSystem>
+    <a:dataSrcExpr/>
+    <a:facetsListExpr/>
+    <a:titleExpr/>
+    <a:defaultFiltersExpr/>
+    <a:layoutType>GRID</a:layoutType>
+    <a:security>16383</a:security>
+    <a:hideLatestNews>false</a:hideLatestNews>
+    <a:isExportable>true</a:isExportable>
+    <a:listViewSrcExpr/>
+    <a:recordViewSrcExpr/>
+  </recordType>
+  <roleMap/>
+  <history>
+    <historyInfo versionUuid="f12ae98f-bfd3-4290-83bc-9ef08a5c9879"/>
+  </history>
+  <migrationVersion>1</migrationVersion>
+</recordTypeHaul>

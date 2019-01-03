@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfce-b49e-8000-9ba2-011c48011c48_623171</versionUuid>
+    <rule>
+        <name>ICM_ComplexForm</name>
+        <uuid>_a-0000dd81-457b-8000-aae2-01ef9001ef90_4892</uuid>
+        <description>Form used to discuss Complex Workflows</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_formLayout"(
+  label: "",
+  instructions: "",
+  firstColumnContents: {
+    #"SYSTEM_SYSRULES_checkboxField"(
+      label: "",
+      labelPosition: "COLLAPSED",
+      choiceLabels: {"Submit Workflow 1 (Required)"},
+      choiceValues: {true()},
+      value: ri!workflow1,
+      saveInto: ri!workflow1,
+      validations: {}
+    ),
+    #"SYSTEM_SYSRULES_checkboxField"(
+      label: "",
+      labelPosition: "COLLAPSED",
+      choiceLabels: {"Submit Workflow 2 (Required)"},
+      choiceValues: {true()},
+      value: ri!workflow2,
+      saveInto: ri!workflow2,
+      validations: {}
+    ),
+    #"SYSTEM_SYSRULES_checkboxField"(
+      label: "",
+      labelPosition: "COLLAPSED",
+      choiceLabels: {"Submit Workflow 3"},
+      choiceValues: {true()},
+      value: ri!workflow3,
+      saveInto: ri!workflow3,
+      validations: {}
+    ),
+    #"SYSTEM_SYSRULES_checkboxField"(
+      label: "",
+      labelPosition: "COLLAPSED",
+      choiceLabels: {"Submit Workflow 4"},
+      choiceValues: {true()},
+      value: ri!workflow4,
+      saveInto: ri!workflow4,
+      validations: {}
+    )
+  },
+  secondColumnContents: {
+    /* Add components here for a two-column form */
+  },
+  buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+    primaryButtons: {
+      #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+        label: "Submit",
+        style: "PRIMARY",
+        saveInto: {}
+      )
+    },
+    secondaryButtons: {}
+  ),
+  validations: {}
+)</definition>
+        <namedTypedValue>
+            <name>workflow1</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>workflow2</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>workflow3</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>workflow4</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22856"/>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623171"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siteHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>15aa0fc6-8219-46ae-ac97-cc781df86fe3</versionUuid>
+  <site a:uuid="52ebb1b2-ef33-4b13-a28a-0d28724064c3" name="ICM Instructor Site">
+    <description>Site for the instructor to manage the Q&amp;A</description>
+    <urlStub>icm-instructor</urlStub>
+    <page>
+      <staticName>New Question</staticName>
+      <description/>
+      <urlStub>new-question</urlStub>
+      <uiObject a:uuid="0002e1d7-4738-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+      <iconId>f075</iconId>
+      <visibilityExpr>fn!true()</visibilityExpr>
+      <pageWidth>STANDARD</pageWidth>
+    </page>
+    <page>
+      <staticName>Questions</staticName>
+      <description/>
+      <urlStub>questions</urlStub>
+      <uiObject a:uuid="3602ae22-f357-49a6-bfbd-8617fee9b71d" xsi:type="a:RecordType">
+        <a:isSystem>false</a:isSystem>
+        <a:security>16383</a:security>
+        <a:hideLatestNews>false</a:hideLatestNews>
+        <a:isExportable>true</a:isExportable>
+      </uiObject>
+      <iconId>f0cb</iconId>
+      <visibilityExpr>fn!true()</visibilityExpr>
+      <pageWidth>STANDARD</pageWidth>
+    </page>
+    <page>
+      <staticName>FaQ</staticName>
+      <description/>
+      <urlStub>faq</urlStub>
+      <uiObject a:uuid="6d989041-66a1-42fe-a65d-eced6df2f03b" xsi:type="a:RecordType">
+        <a:isSystem>false</a:isSystem>
+        <a:security>16383</a:security>
+        <a:hideLatestNews>false</a:hideLatestNews>
+        <a:isExportable>true</a:isExportable>
+      </uiObject>
+      <iconId>f128</iconId>
+      <visibilityExpr>fn!true()</visibilityExpr>
+      <pageWidth>STANDARD</pageWidth>
+    </page>
+    <page>
+      <staticName>Monday Roster</staticName>
+      <description/>
+      <urlStub>monday-roster</urlStub>
+      <uiObject a:uuid="0002e1ba-ed89-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+      <iconId>f2ba</iconId>
+      <visibilityExpr>fn!true()</visibilityExpr>
+      <pageWidth>STANDARD</pageWidth>
+    </page>
+    <page>
+      <staticName>Friday Roster Confirmation</staticName>
+      <description/>
+      <urlStub>friday-roster-confirmation</urlStub>
+      <uiObject a:uuid="0002e1c4-8840-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+      <iconId>f2b9</iconId>
+      <visibilityExpr>fn!true()</visibilityExpr>
+      <pageWidth>STANDARD</pageWidth>
+    </page>
+    <visibility>268435456</visibility>
+    <headerBackgroundColor/>
+    <selectedTabBackgroundColor/>
+    <faviconRef a:uuid="SYSTEM_CONTENT_SITES_DEFAULT_FAVICON" xsi:type="a:CollaborationDocument"/>
+    <faviconHref/>
+    <logoRef a:uuid="SYSTEM_CONTENT_SITES_DEFAULT_LOGO" xsi:type="a:CollaborationDocument"/>
+    <logoHref/>
+    <headerBackgroundColorExpr/>
+    <selectedTabBackgroundColorExpr/>
+    <accentColor/>
+    <accentColorExpr/>
+    <logoExpr/>
+    <faviconExpr/>
+    <showName>false</showName>
+    <tempoLinkVisibility>HIDDEN</tempoLinkVisibility>
+    <showRecordNews>true</showRecordNews>
+  </site>
+  <roleMap>
+    <role name="site_administrator">
+      <users/>
+      <groups>
+        <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+      </groups>
+    </role>
+  </roleMap>
+  <history>
+    <historyInfo versionUuid="86728e06-3996-4c76-8b39-b1141213ee08"/>
+    <historyInfo versionUuid="57fa67cc-9324-45e0-9881-a645f0024dcd"/>
+    <historyInfo versionUuid="15aa0fc6-8219-46ae-ac97-cc781df86fe3"/>
+  </history>
+</siteHaul>

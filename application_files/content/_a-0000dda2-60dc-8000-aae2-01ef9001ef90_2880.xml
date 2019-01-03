@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfce-b49e-8000-9ba2-011c48011c48_623154</versionUuid>
+    <rule>
+        <name>ICM_TrainingCourseSummaryView</name>
+        <uuid>_a-0000dda2-60dc-8000-aae2-01ef9001ef90_2880</uuid>
+        <description>Summary view to display current students in a course</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+    startIndex: 1,
+    batchSize: -1
+  ),
+  local!users: getdistinctusers(ri!group),
+  with(
+    local!datasubset: #"SYSTEM_SYSRULES_dataSubset"(
+      startIndex: local!pagingInfo.startIndex,
+      batchSize: local!pagingInfo.batchSize,
+      totalCount: length(local!users),
+      data: {users: local!users},
+      identifiers: enumerate(length(local!users))+1
+    ),
+    #"SYSTEM_SYSRULES_dashboardLayout"(
+      firstColumnContents: {
+      #"SYSTEM_SYSRULES_sectionLayout"(
+        firstColumnContents: #"SYSTEM_SYSRULES_gridField"(
+      labelPosition: "COLLAPSED",
+      totalCount: local!datasubset.totalCount,
+      columns: {
+        #"SYSTEM_SYSRULES_gridTextColumn"(
+          label: "Student Names",
+          data: apply(
+            #"_a-0000dd6d-f1e5-8000-aae2-01ef9001ef90_4861",
+            touniformstring(local!datasubset.data.users)
+          )
+        ),
+        #"SYSTEM_SYSRULES_gridTextColumn"(
+          label: "User Type",
+          data: apply(
+            fn!user,
+            touniformstring(local!datasubset.data.users),
+            "userTypeName"
+          )
+        ),
+        #"SYSTEM_SYSRULES_gridTextColumn"(
+          label: "Supervisor",
+          data: apply(
+            #"_a-0000dd6d-f1e5-8000-aae2-01ef9001ef90_4861",
+          apply(
+            fn!user,
+            touniformstring(local!datasubset.data.users),
+            "supervisorName"
+          )
+          )
+        )
+      },
+      value: local!pagingInfo,
+      saveInto: local!pagingInfo
+    )
+      ),
+        #"SYSTEM_SYSRULES_sectionLayout"(
+          label: "",
+          firstColumnContents: {
+            #"SYSTEM_SYSRULES_dateField"(
+              label: "Start Date of Class",
+              labelPosition: "ADJACENT",
+              value: ri!startDate,
+              saveInto: {},
+              readonly: true,
+              validations: {}
+            )
+          },
+          secondColumnContents: {
+            #"SYSTEM_SYSRULES_textField"(
+              label: "User's Password",
+              labelPosition: "ADJACENT",
+              value: ri!password,
+              saveInto: {},
+              refreshAfter: "UNFOCUS",
+              readonly: true,
+              validations: {}
+            )
+          }
+        )
+    }
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>group</name>
+            <type>
+                <name>Group</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>startDate</name>
+            <type>
+                <name>date</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>password</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <typedValue>
+        <type>
+            <name>RuleTestConfig?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:name/>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:Group">_e-0000dd13-95ea-8000-aae2-011e94011e94_35</a:value>
+                    <a:nameRef>group</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" xsi:type="xsd:date"/>
+                    <a:nameRef>startDate</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string"/>
+                    <a:nameRef>password</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:assertions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22893"/>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623154"/>
+    </history>
+</contentHaul>

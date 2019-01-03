@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>8d0e4729-ae7b-45c7-a603-0a9e2cec2e56</versionUuid>
+  <recordType a:uuid="3602ae22-f357-49a6-bfbd-8617fee9b71d" name="ICM Student Question">
+    <a:pluralName>ICM Student Questions</a:pluralName>
+    <a:description>Record of all the questions students have asked</a:description>
+    <a:urlStub>z1cwfA</a:urlStub>
+    <a:source a:uuid="0002e1d7-4738-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+    <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_recordGridLayoutColumns"(
+  columns: {
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "",
+      width: "NARROW",
+      component: #"SYSTEM_SYSRULES_recordGrid_imageField_v1"(
+        images: #"SYSTEM_SYSRULES_userImage"(
+            user: rf!studentQuestion.student,
+            altText: rf!studentQuestion
+          ),
+        size: "SMALL",
+        isThumbnail: false,
+        style: "AVATAR"
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Student",
+      width: "NARROW",
+      component: #"SYSTEM_SYSRULES_recordGrid_richTextDisplayField"(
+        value: {
+          #"SYSTEM_SYSRULES_richTextItem_v1"(
+            text: {" " &amp; if(
+  like(rf!studentQuestion.student,"*.*"),
+  user(rf!studentQuestion.student,"firstName") &amp; " " &amp; user(rf!studentQuestion.student,"lastName"),
+  rf!studentQuestion.student
+  )},
+            link: #"SYSTEM_SYSRULES_userRecordLink"(
+              label: "User Record Link",
+              user: rf!studentQuestion.student
+            )
+          )
+        }
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Topic",
+      width: "NARROW",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayvalue: if(
+          rf!studentQuestion.topic="Not Listed",
+          rf!studentQuestion.newTopic,
+          rf!studentQuestion.topic
+        )
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Question",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayvalue: if(
+          len(rf!studentQuestion.question)&gt;100,
+          left(rf!studentQuestion.question, 100) &amp; "...",
+          rf!studentQuestion.question
+          )
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Answer",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_richTextDisplayField"(
+        value: load(
+          local!answered: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47933"(rf!studentQuestion.id),
+          local!answer: #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727637"(rf!studentQuestion.id),
+          if(
+            local!answered,
+          {
+          #"SYSTEM_SYSRULES_richTextItem_v1"(
+            text: local!answer.answer &amp; char(10)
+          ),
+          if(
+            length(local!answer.links)&gt;0,
+          #"SYSTEM_SYSRULES_forEach"(
+            items: split(local!answer.links,";"),
+            expression: #"SYSTEM_SYSRULES_richTextItem_v1"(
+              text: fv!item,
+              link: if(
+                like(fv!item,"*https*"),
+                #"SYSTEM_SYSRULES_safeLink"(
+                  label:fv!item,                                                 
+                  uri: fv!item
+                ),
+                null
+              )
+            )
+          ),
+          null
+          )
+          },
+        #"SYSTEM_SYSRULES_richTextItem_v1"(
+            text: {"Answer the Question"},
+            link: #"SYSTEM_SYSRULES_startProcessLink"(
+              label: "Start Process Link",
+              processmodel: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47872",
+              processparameters: {
+  studentQuestion: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47878"(rf!studentQuestion.id).studentQuestion,
+  instructorAnswer: null
+}
+            )
+          )
+          )
+        )
+      
+      )
+    )
+  },
+  pageSize: 50,
+  defaultSort: #"SYSTEM_SYSRULES_sortInfo"(
+    field: "studentQuestion.id"
+  ),
+  shadeAlternateRows: true
+)</a:listViewTemplateExpr>
+    <a:fieldCfg name="Status">
+      <a:isSortable>false</a:isSortable>
+      <a:isSearchable>false</a:isSearchable>
+      <a:isFacet>true</a:isFacet>
+      <a:facetType>EXPRESSION</a:facetType>
+      <a:isExclusiveFacet>true</a:isExclusiveFacet>
+      <a:facetExpr>#"SYSTEM_SYSRULES_facet_v1"(
+  name: "Status",
+  options: {
+    #"SYSTEM_SYSRULES_facetOption"(
+    id: 1, 
+    name: "Answered",
+    filter: #"SYSTEM_SYSRULES_queryFilter"(
+      field: "studentQuestion.id",
+      operator: "in",
+      value: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_48067"()
+    )
+  ),
+  #"SYSTEM_SYSRULES_facetOption"(
+    id: 2,
+    name: "Unanswered",
+    filter: #"SYSTEM_SYSRULES_queryFilter"(
+      field: "studentQuestion.id",
+      operator: "not in",
+      value: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_48067"()
+    )
+  )
+  }
+)</a:facetExpr>
+      <a:sortOrderIndex>0</a:sortOrderIndex>
+      <a:facetOrderIndex>0</a:facetOrderIndex>
+      <a:visibilityExpr/>
+      <a:defaultOptionExpr/>
+      <a:allowMultipleSelections>true</a:allowMultipleSelections>
+    </a:fieldCfg>
+    <a:detailViewCfg>
+      <a:nameExpr>="Summary"</a:nameExpr>
+      <a:uiExpr/>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>summary</a:urlStub>
+      <a:headerExpr/>
+    </a:detailViewCfg>
+    <a:isSystem>false</a:isSystem>
+    <a:dataSrcExpr/>
+    <a:facetsListExpr/>
+    <a:titleExpr>rf!studentQuestion.question</a:titleExpr>
+    <a:defaultFiltersExpr/>
+    <a:layoutType>GRID</a:layoutType>
+    <a:security>16383</a:security>
+    <a:hideLatestNews>false</a:hideLatestNews>
+    <a:isExportable>true</a:isExportable>
+    <a:listViewSrcExpr/>
+    <a:recordViewSrcExpr/>
+    <a:recordListActionCfg>
+      <a:staticTitle>Ask for help</a:staticTitle>
+      <a:staticDescription>Post a message on Slack asking for a bit of help</a:staticDescription>
+      <a:iconId>f292</a:iconId>
+      <a:target a:uuid="0002e1dc-a6dc-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+    </a:recordListActionCfg>
+  </recordType>
+  <roleMap>
+    <role name="record_type_administrator">
+      <users/>
+      <groups>
+        <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+      </groups>
+    </role>
+  </roleMap>
+  <history>
+    <historyInfo versionUuid="8cb51456-1067-4de3-a6d3-82817552e0f8"/>
+    <historyInfo versionUuid="8d0e4729-ae7b-45c7-a603-0a9e2cec2e56"/>
+  </history>
+  <migrationVersion>1</migrationVersion>
+</recordTypeHaul>

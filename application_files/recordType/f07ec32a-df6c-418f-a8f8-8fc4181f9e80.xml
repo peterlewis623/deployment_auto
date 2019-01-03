@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>b434c8ca-ad04-4543-b63e-8202a493cdf0</versionUuid>
+  <recordType a:uuid="f07ec32a-df6c-418f-a8f8-8fc4181f9e80" name="ICM Instructor Answer">
+    <a:pluralName>ICM Instructor Answers</a:pluralName>
+    <a:description>Process backed record of instructor answers</a:description>
+    <a:urlStub>WXA25g</a:urlStub>
+    <a:source a:uuid="0002e1d8-4ed4-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+    <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_recordGridLayoutColumns"(
+  columns: {
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "",
+      width: "NARROW",
+      component: #"SYSTEM_SYSRULES_recordGrid_imageField_v1"(
+        images: {
+          #"SYSTEM_SYSRULES_userImage"(
+            user: rf!studentQuestion.student
+          )
+        },
+        size: "MEDIUM",
+        isThumbnail: false,
+        style: "AVATAR"
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Student",
+      width: "NARROW",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayvalue: user(rf!studentQuestion.student,"firstName") &amp; "
+" &amp; user(rf!studentQuestion.student,"lastName")
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Question",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayvalue: rf!studentQuestion.question
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Answer",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayvalue: rf!instructorAnswer.answer
+      )
+    )
+  },
+  pageSize: 50,
+  defaultSort: #"SYSTEM_SYSRULES_sortInfo"(),
+  shadeAlternateRows: true
+)</a:listViewTemplateExpr>
+    <a:detailViewCfg>
+      <a:nameExpr>="Summary"</a:nameExpr>
+      <a:uiExpr/>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>summary</a:urlStub>
+      <a:headerExpr/>
+    </a:detailViewCfg>
+    <a:isSystem>false</a:isSystem>
+    <a:dataSrcExpr/>
+    <a:facetsListExpr/>
+    <a:titleExpr/>
+    <a:defaultFiltersExpr/>
+    <a:layoutType>GRID</a:layoutType>
+    <a:security>16383</a:security>
+    <a:hideLatestNews>false</a:hideLatestNews>
+    <a:isExportable>true</a:isExportable>
+    <a:listViewSrcExpr/>
+    <a:recordViewSrcExpr/>
+  </recordType>
+  <roleMap>
+    <role name="record_type_administrator">
+      <users/>
+      <groups>
+        <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+      </groups>
+    </role>
+  </roleMap>
+  <history>
+    <historyInfo versionUuid="b434c8ca-ad04-4543-b63e-8202a493cdf0"/>
+  </history>
+  <migrationVersion>1</migrationVersion>
+</recordTypeHaul>

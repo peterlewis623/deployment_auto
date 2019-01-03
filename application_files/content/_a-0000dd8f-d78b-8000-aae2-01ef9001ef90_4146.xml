@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfce-b49e-8000-9ba2-011c48011c48_623189</versionUuid>
+    <rule>
+        <name>ICM_GatewayOpenLinkForm</name>
+        <uuid>_a-0000dd8f-d78b-8000-aae2-01ef9001ef90_4146</uuid>
+        <description>Form to open links to the existing process</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=#"SYSTEM_SYSRULES_formLayout_v1"(
+  label: "Go to the Gateway Process",
+  contents: {
+    #"SYSTEM_SYSRULES_linkField"(
+      label: "",
+      labelPosition: "ABOVE",
+      links: {
+        #"SYSTEM_SYSRULES_safeLink"(
+          label: "Open Process",
+          uri: #"_a-0000dd8f-d78b-8000-aae2-01ef9001ef90_4144"(ri!pid)
+        )
+      }
+    )
+  },
+  buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+    primaryButtons: {
+      #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+        label: "Start",
+        style: "NORMAL",
+        saveInto: {}
+      )
+    },
+    secondaryButtons: {}
+  ),
+  validations: {}
+)</definition>
+        <namedTypedValue>
+            <name>pid</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22868"/>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623189"/>
+    </history>
+</contentHaul>

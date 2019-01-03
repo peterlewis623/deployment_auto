@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e076-41cd-8000-9ba2-011c48011c48_1064826</versionUuid>
+    <rule>
+        <name>ICM_InitiateSurvey</name>
+        <uuid>_a-0000dfce-b49e-8000-9ba2-011c48011c48_623050</uuid>
+        <description>Form to start creating a survey</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!surveyTypes: cast(
+    'type!{urn:com:appian:types:ICM}ICM_SurveyType?list',
+    #"37f14ba3-242a-4064-8557-db3ac45f4079"().result.body
+  ),
+  local!selectedType,
+  local!selection: #"SYSTEM_SYSRULES_gridSelection"(
+    pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+      startIndex: 1,
+      batchSize: -1
+    )
+  ),
+  local!questions,
+  local!otherClassName,
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+    label: "Start Survey",
+    contents: {
+      #"SYSTEM_SYSRULES_checkboxField"(
+        labelPosition: "COLLAPSED",
+        choiceLabels: {"Send certificate to participants after completing the survey"},
+        choiceValues: {true},
+        value: ri!certificate,
+        saveInto: ri!certificate
+      ),
+      #"SYSTEM_SYSRULES_richTextDisplayField"(
+        labelPosition: "COLLAPSED",
+        value: #"SYSTEM_SYSRULES_richTextItem"(
+          text: #"SYSTEM_SYSRULES_richTextItem"(
+            text: "The certificate will be sent to students via email from this site, so don't forget to enable it in the Admin Console",
+            style: "EMPHASIS"
+          ),
+          style: "NEGATIVE"
+        ),
+        showWhen: ri!certificate=true
+      ),
+      #"SYSTEM_SYSRULES_columnsLayout"(
+        columns: {
+          #"SYSTEM_SYSRULES_columnLayout"(
+            contents: {
+              #"SYSTEM_SYSRULES_dropdownField"(
+                label: "Class Name",
+                placeholderLabel: "Select a Class...",
+                choiceLabels: append(#"_a-0000e076-41cd-8000-9ba2-011c48011c48_1064817", "Other"),
+                choiceValues: append(#"_a-0000e076-41cd-8000-9ba2-011c48011c48_1064817", "Other"),
+                value: ri!className,
+                saveInto: ri!className,
+                required: true,
+                showWhen: ri!className&lt;&gt;"Other"
+              ),
+              #"SYSTEM_SYSRULES_sideBySideLayout"(
+                showWhen: ri!className="Other",
+                alignVertical: "BOTTOM",
+                items: {
+                  #"SYSTEM_SYSRULES_sideBySideItem"(
+                    item: #"SYSTEM_SYSRULES_textField"(
+                      label: "Class Name",
+                      required: true,
+                      value: local!otherClassName,
+                      saveInto: local!otherClassName
+                    )
+                  ),
+                  #"SYSTEM_SYSRULES_sideBySideItem"(
+                    item: #"SYSTEM_SYSRULES_richTextDisplayField"(
+                      labelPosition: "COLLAPSED",
+                      value: #"SYSTEM_SYSRULES_richTextIcon"(
+                        icon: "close",
+                        size: "LARGE",
+                        link: #"SYSTEM_SYSRULES_dynamicLink"(
+                          value: null,
+                          saveInto: ri!className
+                        ),
+                        linkStyle: "STANDALONE",
+                        caption: "Go Back"
+                      )
+                    ),
+                    width: "MINIMIZE"
+                  ),
+                }
+              ),
+              #"SYSTEM_SYSRULES_dropdownField"(
+                label: "Select Survey Type",
+                value: local!selectedType,
+                saveInto: {
+                  local!selectedType,
+                  a!save(
+                    target: local!questions,
+                    value: cast(
+                      'type!{urn:com:appian:types:ICM}ICM_SurveyQuestion?list',
+                      #"59601d00-f26d-40e1-85ab-f11a55a061b0"(local!selectedType).result.body
+                    )
+                  ),
+                  a!save(
+                    target: local!selection.selected,
+                    value: null
+                  )
+                },
+                choiceLabels: local!surveyTypes.name,
+                choiceValues: local!surveyTypes.id,
+                placeholderLabel: "Select a Survey Type..."
+              ),
+            }
+          ),
+          #"SYSTEM_SYSRULES_columnLayout"(
+            contents: #"SYSTEM_SYSRULES_textField"(
+              label: "Customer",
+              value: ri!customer,
+              saveInto: ri!customer,
+              required: true
+            )
+          ),
+          #"SYSTEM_SYSRULES_columnLayout"(
+            contents: #"SYSTEM_SYSRULES_textField"(
+              label: "Instructor Name",
+              value: ri!instructor,
+              saveInto: ri!instructor,
+              required: true
+            )
+          )
+        }
+      ),
+      #"SYSTEM_SYSRULES_gridField"(
+        label: "Questions",
+        columns: {
+          #"SYSTEM_SYSRULES_gridTextColumn"(
+            label: "Question",
+            data: index(local!questions, "questionText", null)
+          ),
+          #"SYSTEM_SYSRULES_gridTextColumn"(
+            label: "Survey Type",
+            data: #"SYSTEM_SYSRULES_forEach"(
+              items: index(local!questions, "questionType", null),
+              expression: displayvalue(
+                fv!item,
+                {1,2},
+                {"Free Response", "Selection 1-5"},
+                null
+              )
+            )
+            
+          )
+        },
+        value: local!selection,
+        saveInto: local!selection,
+        totalCount: count(local!questions),
+        identifiers: index(local!questions, "id", null),
+        selection: and(
+          not(isnull(local!questions)),
+          count(local!questions)&gt;0
+        ),
+        requireSelection: true,
+        spacing: "DENSE",
+        borderStyle: "LIGHT"
+      )
+      
+      
+    },
+    buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+      primaryButtons: {
+        #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+          label: "Submit",
+          style: "PRIMARY",
+          saveInto: {
+            a!save(
+              target: ri!questions,
+              value: #"SYSTEM_SYSRULES_forEach"(
+                items: local!selection.selected,
+                expression: displayvalue(
+                  fv!item,
+                  local!questions.id,
+                  local!questions,
+                  null
+                )
+              )
+            ),
+            if(
+              ri!className="Other",
+              a!save(
+                target: ri!className,
+                value: local!otherClassName
+              ),
+              {}
+            )
+          }
+        )
+      }
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>questions</name>
+            <type>
+                <name>ICM_SurveyQuestion?list</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>className</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>customer</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>instructor</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>certificate</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623294"/>
+        <historyInfo versionUuid="_a-0000e046-0511-8000-9ba2-011c48011c48_946763"/>
+        <historyInfo versionUuid="_a-0000e076-41cd-8000-9ba2-011c48011c48_1064752"/>
+        <historyInfo versionUuid="_a-0000e076-41cd-8000-9ba2-011c48011c48_1064826"/>
+    </history>
+</contentHaul>

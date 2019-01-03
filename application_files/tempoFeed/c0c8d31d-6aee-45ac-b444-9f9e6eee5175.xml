@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tempoFeedHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>f157004e-ec72-435d-9725-0269749e1ed4</versionUuid>
+    <tempoFeed>
+        <uuid>c0c8d31d-6aee-45ac-b444-9f9e6eee5175</uuid>
+        <name>ICM Answers</name>
+        <description>Feed for posting answers</description>
+        <showInCatalog>true</showInCatalog>
+        <systemFeed>false</systemFeed>
+    </tempoFeed>
+    <roleMap>
+        <role name="administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="f157004e-ec72-435d-9725-0269749e1ed4"/>
+    </history>
+</tempoFeedHaul>

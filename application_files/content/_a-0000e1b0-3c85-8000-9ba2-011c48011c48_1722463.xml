@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722481</versionUuid>
+    <rule>
+        <name>ICM_NewStudents</name>
+        <uuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722463</uuid>
+        <description>List of new students added to the class</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3578</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!firstNames: #"_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42093"(queryrecord(
+  recordType: #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722457",
+  query: #"SYSTEM_SYSRULES_query"(
+    selection: #"SYSTEM_SYSRULES_querySelection"(
+      columns: #"SYSTEM_SYSRULES_queryColumn"(
+        field: "students"
+      )
+    ),
+    pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+      startIndex: 1,
+      batchSize: -1,
+      sort: #"SYSTEM_SYSRULES_sortInfo"(
+        field: "entryId",
+        ascending: true
+      )
+    )
+  )
+).data.students.firstName),
+  local!lastNames: #"_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42093"(queryrecord(
+  recordType: #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722457",
+  query: #"SYSTEM_SYSRULES_query"(
+    selection: #"SYSTEM_SYSRULES_querySelection"(
+      columns: #"SYSTEM_SYSRULES_queryColumn"(
+        field: "students"
+      )
+    ),
+    pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+      startIndex: 1,
+      batchSize: -1,
+      sort: #"SYSTEM_SYSRULES_sortInfo"(
+        field: "entryId",
+        ascending: true
+      )
+    )
+  )
+).data.students.lastName),
+  #"SYSTEM_SYSRULES_forEach"(
+  items: local!firstNames,
+  expression: fv!item &amp; " " &amp; local!lastNames[fv!index]
+)
+)</definition>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722481"/>
+    </history>
+</contentHaul>

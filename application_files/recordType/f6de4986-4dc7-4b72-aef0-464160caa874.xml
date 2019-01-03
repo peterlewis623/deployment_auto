@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>90fb5f27-10c8-4d92-b730-e7d44569c749</versionUuid>
+  <recordType a:uuid="f6de4986-4dc7-4b72-aef0-464160caa874" name="ICM Send Roster Process">
+    <a:pluralName>ICM Send Roster Processes</a:pluralName>
+    <a:description>Record of process instances of sending the roster</a:description>
+    <a:urlStub>Pdp31A</a:urlStub>
+    <a:source a:uuid="0002e1ba-ed89-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+    <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_recordGridLayoutColumns"(
+  columns: {
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Process",
+      component: #"SYSTEM_SYSRULES_recordGrid_richTextDisplayField"(
+        value: {
+          #"SYSTEM_SYSRULES_richTextItem_v1"(
+            text: {rf!pp.name},
+            link: #"SYSTEM_SYSRULES_recordLink"(
+              label: "Record Link",
+              recordtype: #"_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42453",
+              identifier: rp!id
+            )
+          )
+        }
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Number of Present",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_integerField"(
+        displayvalue: count(rf!firstNamesPresent)
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Number of Absence",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_integerField"(
+        displayvalue: count(rf!firstNamesAbsent)
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Date and Time",
+      width: "DISTRIBUTE",
+      field: "pp.startTime",
+      component: #"SYSTEM_SYSRULES_recordGrid_dateTimeField"(
+        displayvalue: rf!pp.startTime
+      )
+    )
+  },
+  pageSize: 50,
+  defaultSort: #"SYSTEM_SYSRULES_sortInfo"(
+    field: "pp.startTime",
+    ascending: false
+  ),
+  shadeAlternateRows: true
+)</a:listViewTemplateExpr>
+    <a:detailViewCfg>
+      <a:nameExpr>="Summary"</a:nameExpr>
+      <a:uiExpr/>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>summary</a:urlStub>
+      <a:headerExpr/>
+    </a:detailViewCfg>
+    <a:isSystem>false</a:isSystem>
+    <a:dataSrcExpr/>
+    <a:facetsListExpr/>
+    <a:titleExpr/>
+    <a:defaultFiltersExpr/>
+    <a:layoutType>GRID</a:layoutType>
+    <a:security>16383</a:security>
+    <a:hideLatestNews>false</a:hideLatestNews>
+    <a:isExportable>true</a:isExportable>
+    <a:listViewSrcExpr/>
+    <a:recordViewSrcExpr/>
+  </recordType>
+  <roleMap>
+    <role name="record_type_administrator">
+      <users/>
+      <groups>
+        <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+      </groups>
+    </role>
+  </roleMap>
+  <history>
+    <historyInfo versionUuid="aab63da0-063b-4a38-92f7-d398f11c11eb"/>
+    <historyInfo versionUuid="90fb5f27-10c8-4d92-b730-e7d44569c749"/>
+  </history>
+  <migrationVersion>1</migrationVersion>
+</recordTypeHaul>

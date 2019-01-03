@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<groupHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_e-0000e046-04eb-8000-9aee-01075c01075c_329</versionUuid>
+    <group>
+        <name>ICM All Users</name>
+        <securityMap>SECURITYMAP_TEAM</securityMap>
+        <uuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_35</uuid>
+        <groupTypeUuid>SYSTEM_GROUP_TYPE_CUSTOM</groupTypeUuid>
+        <description>Contains all of the users and groups withing the ICM application</description>
+        <delegatedCreation>false</delegatedCreation>
+        <memberPolicy>MEMBERPOLICY_CLOSED</memberPolicy>
+        <viewingPolicy>VIEWINGPOLICY_LOW</viewingPolicy>
+        <attributes/>
+    </group>
+    <members>
+        <users/>
+        <groups>
+            <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+            <groupUuid>_e-0000e142-f2ba-8000-9aee-01075c01075c_692</groupUuid>
+            <groupUuid>_e-0000e142-f2ba-8000-9aee-01075c01075c_688</groupUuid>
+        </groups>
+    </members>
+    <admins>
+        <users/>
+        <groups>
+            <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+        </groups>
+    </admins>
+    <ruleSet/>
+    <history>
+        <historyInfo versionUuid="_e-0000e046-04eb-8000-9aee-01075c01075c_329"/>
+    </history>
+</groupHaul>

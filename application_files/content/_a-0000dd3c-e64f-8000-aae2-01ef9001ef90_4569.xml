@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22387</versionUuid>
+    <rule>
+        <name>ICM_AddUsersItemRowEach</name>
+        <uuid>_a-0000dd3c-e64f-8000-aae2-01ef9001ef90_4569</uuid>
+        <description>Support rule to add users</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3578</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=#"SYSTEM_SYSRULES_gridRowLayout"(&#xD;
+  id: ri!index,&#xD;
+  contents: {&#xD;
+    #"SYSTEM_SYSRULES_textField"(&#xD;
+      /* Labels are not visible in grid cells but are necessary to meet accessibility requirements */&#xD;
+      label: "firstName " &amp; ri!index,&#xD;
+      value: ri!items[ri!index].firstName,&#xD;
+      saveInto: ri!items[ri!index].firstName,&#xD;
+      validations:if(#"6fa0d87c-dab6-424a-97a3-a2629f95f7f3"(ri!items[ri!index].firstName),"A username can only contain letters, numbers, and the following special characters: @  .  _  -",""),&#xD;
+      required: true&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_textField"(&#xD;
+      /* Labels are not visible in grid cells but are necessary to meet accessibility requirements */&#xD;
+      label: "lastName " &amp; ri!index,&#xD;
+      value: ri!items[ri!index].lastName,&#xD;
+      saveInto: ri!items[ri!index].lastName,&#xD;
+      validations:{if(#"6fa0d87c-dab6-424a-97a3-a2629f95f7f3"(ri!items[ri!index].lastName),"A username can only contain letters, numbers, and the following special characters: @  .  _  -",""),&#xD;
+       if(&#xD;
+         #"_a-0000dda7-8ebe-8000-aae2-01ef9001ef90_2993"(student: ri!items[ri!index]),&#xD;
+           "", &#xD;
+           "That username already exists")&#xD;
+      },&#xD;
+      required: true&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_imageField"(&#xD;
+      label: "delete " &amp; ri!index,&#xD;
+      images: #"SYSTEM_SYSRULES_documentImage"(&#xD;
+        document: #"SYSTEM_SYSRULES_iconIndicator"("REMOVE"),&#xD;
+        altText: "Remove",&#xD;
+        caption: "Remove " &amp; ri!items[ri!index].firstName &amp; " " &amp; "ri!items[ri!index].lastName",&#xD;
+        link: #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+          value: ri!index,&#xD;
+          saveInto: {&#xD;
+            a!save(ri!items, remove(ri!items, save!value)),&#xD;
+            /* When modifying the size of the array used in a!applyComponents,  */&#xD;
+            /* make the same change in the "token" array variable               */&#xD;
+            a!save(ri!itemsToken, remove(ri!itemsToken, save!value))&#xD;
+          }&#xD;
+        )&#xD;
+      ),&#xD;
+      size: "ICON"&#xD;
+    )&#xD;
+  }&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>items</name>
+            <type>
+                <name>ICM_studentGrid?list</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>itemsToken</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <typedValue>
+        <type>
+            <name>RuleTestConfig?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:name/>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                    <a:nameRef>items</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" xsi:type="xsd:int"/>
+                    <a:nameRef>index</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string"/>
+                    <a:nameRef>itemsToken</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:assertions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22387"/>
+    </history>
+</contentHaul>

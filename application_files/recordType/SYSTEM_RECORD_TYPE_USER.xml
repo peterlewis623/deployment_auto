@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>15e30d1a-5a16-4d63-b0d3-f08fc1902d58</versionUuid>
+  <recordType a:uuid="SYSTEM_RECORD_TYPE_USER" name="User">
+    <a:pluralName>Users</a:pluralName>
+    <a:description>Directory of users</a:description>
+    <a:urlStub>U1TzGg</a:urlStub>
+    <a:source a:uuid="{http://www.appian.com/ae/types/2009}UserProfile" xsi:type="a:Datatype"/>
+    <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_userRecordListViewItem"()</a:listViewTemplateExpr>
+    <a:detailViewCfg>
+      <a:nameExpr>="Summary"</a:nameExpr>
+      <a:uiExpr>{}</a:uiExpr>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>summary</a:urlStub>
+      <a:headerExpr>#"SYSTEM_SYSRULES_userRecordHeader"()</a:headerExpr>
+    </a:detailViewCfg>
+    <a:detailViewCfg>
+      <a:nameExpr>"Student Intro"</a:nameExpr>
+      <a:uiExpr>#"_a-0000dda8-d183-8000-aae2-01ef9001ef90_3064"(
+  username: rf!username,
+  email: rf!email,
+  supervisor: rf!supervisor
+)</a:uiExpr>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>_mhis9A</a:urlStub>
+      <a:headerExpr/>
+    </a:detailViewCfg>
+    <a:defaultSortInfo>
+      <field>lastName</field>
+      <ascending>true</ascending>
+    </a:defaultSortInfo>
+    <a:isSystem>true</a:isSystem>
+    <a:dataSrcExpr>fn!queryuserrecord_appian_internal(rsp!query)</a:dataSrcExpr>
+    <a:facetsListExpr>#"SYSTEM_SYSRULES_userRecordFacets"()</a:facetsListExpr>
+    <a:titleExpr/>
+    <a:defaultFiltersExpr/>
+    <a:layoutType>FEED</a:layoutType>
+    <a:security>32767</a:security>
+    <a:hideLatestNews>false</a:hideLatestNews>
+    <a:isExportable>false</a:isExportable>
+  </recordType>
+  <roleMap/>
+  <history>
+    <historyInfo versionUuid="15e30d1a-5a16-4d63-b0d3-f08fc1902d58"/>
+  </history>
+  <migrationVersion>1</migrationVersion>
+</recordTypeHaul>

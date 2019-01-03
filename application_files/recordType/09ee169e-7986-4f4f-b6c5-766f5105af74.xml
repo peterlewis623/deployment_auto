@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>76318543-5fa6-4855-8198-91090a9069f5</versionUuid>
+  <recordType a:uuid="09ee169e-7986-4f4f-b6c5-766f5105af74" name="ICM Final Changes Roster">
+    <a:pluralName>ICM Final Changes Rosters</a:pluralName>
+    <a:description>Process backed record of the final changes to the roster</a:description>
+    <a:urlStub>WUaQ2A</a:urlStub>
+    <a:source a:uuid="0002e1c4-8840-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+    <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_recordGridLayoutColumns"(
+  pageSize: 50,
+  defaultSort: #"SYSTEM_SYSRULES_sortInfo"(
+    field: "message",
+    ascending: fn!true()
+  ),
+  columns: {
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Message",
+      field: "message",
+      component: #"SYSTEM_SYSRULES_recordGrid_linkField"(
+        links: #"SYSTEM_SYSRULES_recordLink"(
+          label: rf!message,
+          recordType: rp!type,
+          identifier: rp!id
+        )
+      )
+    )
+  },
+  shadeAlternateRows: true
+)</a:listViewTemplateExpr>
+    <a:detailViewCfg>
+      <a:nameExpr>="Summary"</a:nameExpr>
+      <a:uiExpr/>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>summary</a:urlStub>
+      <a:headerExpr/>
+    </a:detailViewCfg>
+    <a:isSystem>false</a:isSystem>
+    <a:dataSrcExpr/>
+    <a:facetsListExpr/>
+    <a:titleExpr/>
+    <a:defaultFiltersExpr/>
+    <a:layoutType>GRID</a:layoutType>
+    <a:security>16383</a:security>
+    <a:hideLatestNews>false</a:hideLatestNews>
+    <a:isExportable>true</a:isExportable>
+    <a:listViewSrcExpr/>
+    <a:recordViewSrcExpr/>
+  </recordType>
+  <roleMap/>
+  <history>
+    <historyInfo versionUuid="76318543-5fa6-4855-8198-91090a9069f5"/>
+  </history>
+  <migrationVersion>1</migrationVersion>
+</recordTypeHaul>

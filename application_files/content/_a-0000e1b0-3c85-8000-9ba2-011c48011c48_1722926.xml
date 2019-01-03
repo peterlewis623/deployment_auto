@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727344</versionUuid>
+    <rule>
+        <name>ICM_FinalRosterChangesPreview</name>
+        <uuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1722926</uuid>
+        <description>Interface that shows what the final roster will look like</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!readOnly: true,
+  local!message:#"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727296"(
+              ri!people,
+              ri!days
+            ),
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+  label: "Roster Confirmation E-mail",
+  contents: {
+    #"SYSTEM_SYSRULES_sideBySideLayout"(
+      items: {
+        #"SYSTEM_SYSRULES_sideBySideItem"(
+          item: #"SYSTEM_SYSRULES_ButtonArrayLayout"(
+            buttons: {
+              #"SYSTEM_SYSRULES_ButtonWidget"(
+                label: if(
+                  local!readOnly,
+                  "Edit",
+                  "Read"
+                  ),
+                value: local!readOnly,
+                saveinto: a!save(
+                  target: local!readOnly,
+                  value: not(local!readOnly)
+                ),
+                style: "NORMAL"
+              )
+            },
+            align: "START"
+          ),
+          width: "MINIMIZE"
+        ),
+        #"SYSTEM_SYSRULES_sideBySideItem"(
+          item: #"SYSTEM_SYSRULES_paragraphField"(
+            label: "Text",
+            labelPosition: "COLLAPSED",
+            value: local!message,
+            saveInto: local!message,
+            refreshAfter: "UNFOCUS",
+            readonly: local!readOnly,
+            validations: {}
+          )
+        )
+      }
+    )
+  },
+  buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+    primaryButtons: {
+      #"SYSTEM_SYSRULES_ButtonWidget"(
+        label: "Submit",
+        saveinto: a!save(
+          target: ri!message,
+          value: local!message
+        ),
+        submit: true,
+        style: "PRIMARY"
+      )
+    },
+    secondaryButtons: {}
+  )
+)
+)</definition>
+        <namedTypedValue>
+            <name>people</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>days</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>message</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1724112"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727344"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfce-b49e-8000-9ba2-011c48011c48_623161</versionUuid>
+    <rule>
+        <name>ICM_StudentDetailsSection</name>
+        <uuid>_a-0000dda8-d183-8000-aae2-01ef9001ef90_3049</uuid>
+        <description>Section to collect student info or show it in a dashboard</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=#"SYSTEM_SYSRULES_sectionLayout"(
+  firstColumnContents: {
+    #"SYSTEM_SYSRULES_textField"(
+      label: "Organization",
+      labelPosition: if(ri!readOnly, "ADJACENT", "ABOVE"),
+      value: ri!organization,
+      saveInto: ri!organization,
+      refreshAfter: "UNFOCUS",
+      required: not(ri!readOnly),
+      readOnly: ri!readOnly,
+      validations: {}
+    ),
+    if(
+      ri!readOnly,
+      #"SYSTEM_SYSRULES_textField"(
+        label: "Classmate Supervisor",
+        labelPosition: "ADJACENT",
+        value: #"_a-0000dd6d-f1e5-8000-aae2-01ef9001ef90_4861"(ri!supervisor),
+        readOnly: ri!readOnly
+      ),
+      #"SYSTEM_SYSRULES_pickerFieldUsers"(
+      label: "Classmate Supervisor",
+      labelPosition:"ABOVE",
+      helptooltip: "Pair up with someone in the class, and put their name here. Make sure they put your name in their form. This person will be your supervisor that we will use later.",
+      groupfilter: ri!group,
+      value: ri!supervisor,
+      saveInto: ri!supervisor,
+      required: true,
+      readOnly: ri!readOnly,
+      validations: if(
+        loggedinuser()&lt;&gt;ri!supervisor,
+        "",
+        "You cannot be your own supervisor. Try the person next to you."
+        )
+      )
+    ),
+    #"SYSTEM_SYSRULES_paragraphField"(
+      label: "Software Experience",
+      labelPosition: if(ri!readOnly, "ADJACENT", "ABOVE"),
+      helptooltip: if(ri!readOnly, "", "Please describe how many years and with what platform"),
+      value: ri!experience,
+      saveInto: ri!experience,
+      refreshAfter: "UNFOCUS",
+      required: not(ri!readOnly),
+      readOnly: ri!readOnly,
+      validations: {}
+    )
+  },
+  secondColumnContents: {
+    #"SYSTEM_SYSRULES_textField"(
+      label: "Email Address",
+      labelPosition: if(ri!readOnly, "ADJACENT", "ABOVE"),
+      helptooltip: if(ri!readOnly, "", "If you would like to get emails from the system to see what they look like, add your email address here. Otherwise a fake email will be used."),
+      value: ri!email,
+      saveInto: ri!email,
+      refreshAfter: "UNFOCUS",
+      readOnly: ri!readOnly,
+      validations: {}
+    ),
+    #"SYSTEM_SYSRULES_paragraphField"(
+      label: "Expectations",
+      labelPosition: if(ri!readOnly, "ADJACENT", "ABOVE"),
+      value: ri!expectations,
+      saveInto: ri!expectations,
+      refreshAfter: "KEYPRESS",
+      required: not(ri!readOnly),
+      readOnly: ri!readOnly,
+      validations: if(
+        or(isnull(ri!expectations), len(ri!expectations)&gt;10),
+        "",
+        "Keep typing..."
+      )),
+    /* Add components here for a two-column form */
+    #"SYSTEM_SYSRULES_paragraphField"(
+      label: "Fun Facts",
+      labelPosition: if(ri!readOnly, "ADJACENT", "ABOVE"),
+      helptooltip: if(ri!readOnly, "", "Tell us something about yourself"),
+      value: ri!funFacts,
+      saveInto: ri!funFacts,
+      refreshAfter: "UNFOCUS",
+      required: not(ri!readOnly),
+      readOnly: ri!readOnly,
+      validations: {}
+    )
+  }
+)</definition>
+        <namedTypedValue>
+            <name>organization</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>experience</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>expectations</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>funFacts</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>supervisor</name>
+            <type>
+                <name>User</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>group</name>
+            <type>
+                <name>Group</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>email</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>readOnly</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <typedValue>
+        <type>
+            <name>RuleTestConfig?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:name/>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string"/>
+                    <a:nameRef>organization</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string"/>
+                    <a:nameRef>experience</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string"/>
+                    <a:nameRef>expectations</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string"/>
+                    <a:nameRef>funFacts</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" xsi:type="a:User"/>
+                    <a:nameRef>supervisor</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" xsi:type="a:Group"/>
+                    <a:nameRef>group</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string"/>
+                    <a:nameRef>email</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:boolean">false</a:value>
+                    <a:nameRef>readOnly</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:assertions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22761"/>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623161"/>
+    </history>
+</contentHaul>

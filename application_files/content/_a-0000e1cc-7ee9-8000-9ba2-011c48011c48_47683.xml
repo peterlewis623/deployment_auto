@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_48062</versionUuid>
+    <rule>
+        <name>ICM_StudentQuestionForm</name>
+        <uuid>_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47683</uuid>
+        <description>Form for students to ask questions</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!topics: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47697",
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+  label: "Ask a question",
+  contents: {
+    #"SYSTEM_SYSRULES_paragraphField"(
+      label: "Your Question",
+      labelPosition: "ABOVE",
+      value: ri!studentQuestion.question,
+      saveInto: ri!studentQuestion.question,
+      refreshAfter: "UNFOCUS",
+      required: true,
+      height: "MEDIUM",
+      validations: {}
+    ),
+    #"SYSTEM_SYSRULES_columnsLayout"(
+      columns: {
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_dropdownField"(
+              label: "Topic",
+              labelPosition: "ABOVE",
+              instructions: "If you can't find the appropriate topic select ""Not Listed""",
+              placeholderLabel: "--- Select a Value ---",
+              choiceLabels: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47971"(),
+              choiceValues: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47971"(),
+              value: ri!studentQuestion.topic,
+              saveInto: {
+                ri!studentQuestion.topic,
+                if(
+                  ri!studentQuestion.topic="Not Listed",
+                  null,
+                  a!save(
+                    target: ri!studentQuestion.newTopic,
+                    value: null
+                  )
+                )
+                },
+              required: true,
+              validations: {}
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Your Topic",
+              labelPosition: "ABOVE",
+              instructions: len(ri!studentQuestion.newTopic) &amp; "/30",
+              value: ri!studentQuestion.newTopic,
+              saveInto: ri!studentQuestion.newTopic,
+              refreshAfter: "KEYPRESS",
+              showwhen: ri!studentQuestion.topic="Not Listed",
+              required: ri!studentQuestion.topic="Not Listed",
+              validations: if(
+                len(ri!studentQuestion.newTopic)&gt;30,
+                "Your topic needs to be less than 30 characters",
+                null
+              )
+            )
+          }
+        )
+      }
+    )
+  },
+  buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+    primaryButtons: {
+      #"SYSTEM_SYSRULES_ButtonWidget"(
+        label: "Submit",
+        saveinto: a!save(
+          target: ri!studentQuestion.student,
+          value: loggedInUser()
+          ),
+        submit: true,
+        style: "PRIMARY"
+      )
+    },
+    secondaryButtons: {}
+  )
+)
+)</definition>
+        <namedTypedValue>
+            <name>studentQuestion</name>
+            <type>
+                <name>ICM_StudentQuestion</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_48062"/>
+    </history>
+</contentHaul>

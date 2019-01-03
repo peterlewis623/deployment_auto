@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1728002</versionUuid>
+    <rule>
+        <name>ICM_RosterChanges</name>
+        <uuid>_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42459</uuid>
+        <description>Interface to select whether anyone was absent during the week</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!students: #"_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42469"().data.present,
+  local!absentDays: {},
+  local!absentPeople: {},
+  local!sent: length(#"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727365"().data)&gt;0,
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+    label: "Final Roster Changes",
+    contents:
+      if(
+        local!sent,
+        #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727345"("final",local!sent),
+      {#"SYSTEM_SYSRULES_sideBySideLayout"(
+        items: {
+          #"SYSTEM_SYSRULES_forEach"(
+                items: {"Monday","Tuesday","Wednesday","Thursday","Friday"},
+                expression: #"SYSTEM_SYSRULES_sideBySideItem"(
+                  item: #"_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42501"(
+                    people: local!absentPeople,
+                    days: local!absentDays,
+                    dayOfWeek: fv!item
+                  )
+                  )
+              ),
+          #"SYSTEM_SYSRULES_sideBySideItem"(
+            item: #"SYSTEM_SYSRULES_richTextDisplayField"(
+                label:"",
+                labelPosition: "ABOVE",
+                value: #"SYSTEM_SYSRULES_richTextHeader"(
+                  text: "RESTART",
+                  link: #"SYSTEM_SYSRULES_dynamicLink"(
+                    saveInto: {
+                      a!save(
+                        target: local!absentDays,
+                        value: {}
+                      ),
+                      a!save(
+                        target: local!absentPeople,
+                        value: {}
+                      )
+                    }
+                  )
+                )
+              )
+          )
+        }
+      ),
+      #"SYSTEM_SYSRULES_columnsLayout"(
+        columns: {
+          #"SYSTEM_SYSRULES_columnLayout"(
+            contents: {
+              #"SYSTEM_SYSRULES_gridLayout"(
+                label: "Mark Days of Absence",
+                labelPosition: "ABOVE",
+                instructions: "",
+                headerCells: {
+                  #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                    label: "Students"
+                  ),
+                  #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                    label: "Monday",
+                    align: "CENTER"
+                  ),
+                  #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                    label: "Tuesday",
+                    align: "CENTER"
+                  ),
+                  #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                    label: "Wednesday",
+                    align: "CENTER"
+                  ),
+                  #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                    label: "Thursday",
+                    align: "CENTER"
+                  ),
+                  #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                    label: "Friday",
+                    align: "CENTER"
+                  )
+                },
+                columnConfigs: {
+                },
+                rows: {
+                  #"SYSTEM_SYSRULES_forEach"(
+                    items: split(local!students,";"),
+                    expression: #"SYSTEM_SYSRULES_gridRowLayout"(
+                      contents: {
+                        #"SYSTEM_SYSRULES_textField"(
+                          label: "Text",
+                          labelPosition: "ABOVE",
+                          value: stripwith(
+                            fv!item,
+                            ";"
+                          ),
+                          saveInto: {},
+                          refreshAfter: "UNFOCUS",
+                          readOnly: true,
+                          validations: {}
+                        ),
+                        #"SYSTEM_SYSRULES_richTextDisplayField"(
+                          label: "",
+                          labelPosition: "ABOVE",
+                          value: #"SYSTEM_SYSRULES_richTextIcon"(
+                            icon: "minus-circle",
+                            link: #"SYSTEM_SYSRULES_dynamicLink"(
+                              saveInto: {
+                                a!save(
+                                  target: local!absentDays,
+                                  value: append(
+                                    local!absentDays,
+                                    "Monday"
+                                  )
+                                ),
+                                a!save(
+                                  target: local!absentPeople,
+                                  value: append(
+                                    local!absentPeople,
+                                    stripwith(fv!item,";")
+                                  )
+                                )
+                              }
+                            ),
+                            color: "#BB0000"
+                          ),
+                          align: "CENTER"
+                        ),
+                        #"SYSTEM_SYSRULES_richTextDisplayField"(
+                          label: "",
+                          labelPosition: "ABOVE",
+                          value: #"SYSTEM_SYSRULES_richTextIcon"(
+                            icon: "minus-circle",
+                            link: #"SYSTEM_SYSRULES_dynamicLink"(
+                              saveInto: {
+                                a!save(
+                                  target: local!absentDays,
+                                  value: append(
+                                    local!absentDays,
+                                    "Tuesday"
+                                  )
+                                ),
+                                a!save(
+                                  target: local!absentPeople,
+                                  value: append(
+                                    local!absentPeople,
+                                    stripwith(fv!item,";")
+                                  )
+                                )
+                              }
+                            ),
+                            color: "#BB0000"
+                          ),
+                          align: "CENTER"
+                        ),
+                        #"SYSTEM_SYSRULES_richTextDisplayField"(
+                          label: "",
+                          labelPosition: "ABOVE",
+                          value: #"SYSTEM_SYSRULES_richTextIcon"(
+                            icon: "minus-circle",
+                            link: #"SYSTEM_SYSRULES_dynamicLink"(
+                              saveInto: {
+                                a!save(
+                                  target: local!absentDays,
+                                  value: append(
+                                    local!absentDays,
+                                    "Wednesday"
+                                  )
+                                ),
+                                a!save(
+                                  target: local!absentPeople,
+                                  value: append(
+                                    local!absentPeople,
+                                    stripwith(fv!item,";")
+                                  )
+                                )
+                              }
+                            ),
+                            color: "#BB0000"
+                          ),
+                          align: "CENTER"
+                        ),
+                        #"SYSTEM_SYSRULES_richTextDisplayField"(
+                          label: "",
+                          labelPosition: "ABOVE",
+                          value: #"SYSTEM_SYSRULES_richTextIcon"(
+                            icon: "minus-circle",
+                            link: #"SYSTEM_SYSRULES_dynamicLink"(
+                              saveInto: {
+                                a!save(
+                                  target: local!absentDays,
+                                  value: append(
+                                    local!absentDays,
+                                    "Thursday"
+                                  )
+                                ),
+                                a!save(
+                                  target: local!absentPeople,
+                                  value: append(
+                                    local!absentPeople,
+                                    stripwith(fv!item,";")
+                                  )
+                                )
+                              }
+                            ),
+                            color: "#BB0000"
+                          ),
+                          align: "CENTER"
+                        ),
+                        #"SYSTEM_SYSRULES_richTextDisplayField"(
+                          label: "",
+                          labelPosition: "ABOVE",
+                          value: #"SYSTEM_SYSRULES_richTextIcon"(
+                            icon: "minus-circle",
+                            link: #"SYSTEM_SYSRULES_dynamicLink"(
+                              saveInto: {
+                                a!save(
+                                  target: local!absentDays,
+                                  value: append(
+                                    local!absentDays,
+                                    "Friday"
+                                  )
+                                ),
+                                a!save(
+                                  target: local!absentPeople,
+                                  value: append(
+                                    local!absentPeople,
+                                    stripwith(fv!item,";")
+                                  )
+                                )
+                              }
+                            ),
+                            color: "#BB0000"
+                          ),
+                          align: "CENTER"
+                        )
+                      }
+                    )
+                  )
+                },
+                selectionSaveInto: {},
+                validations: {},
+                shadeAlternateRows: true
+              )
+            },
+            width: "AUTO"
+          )
+        }
+      )}
+    ),
+    buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+      primaryButtons: {
+        load(
+          local!submitted: length(#"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727365"().data)&gt;0,
+          #"SYSTEM_SYSRULES_ButtonWidget"(
+          label: "Submit",
+          showWhen: not(local!sent),
+          confirmHeader: if(
+            local!submitted,
+            "Warning",
+            null
+          ),
+          confirmMessage: if(
+            local!submitted,
+            "You have already sent the final changes to the roster, are you sure you want to send it again?",
+            null
+          ),
+          confirmButtonLabel: if(
+            local!submitted,
+            "Yes, resubmit the changes",
+            null
+          ),
+          saveInto: {
+            a!save(
+              target: ri!people,
+              value: local!absentPeople
+            ),
+            a!save(
+              target: ri!days,
+              value: local!absentDays
+            )
+          },
+          submit: true,
+          style: "PRIMARY"
+          )
+        ),
+       
+      },
+      secondaryButtons: {}
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>people</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>days</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1b4-b4f2-8000-9ba2-011c48011c48_42562"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1724108"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727395"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1728002"/>
+    </history>
+</contentHaul>

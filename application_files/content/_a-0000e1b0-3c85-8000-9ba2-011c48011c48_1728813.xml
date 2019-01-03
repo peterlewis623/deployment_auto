@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1728839</versionUuid>
+    <rule>
+        <name>ICM_SearchTermCompare</name>
+        <uuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1728813</uuid>
+        <description>Given an text to search and an array of search terms, returns a boolean value to evaluate whether there is a match</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3578</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>if(
+  ri!and,
+  and(
+    #"SYSTEM_SYSRULES_forEach"(
+  items: ri!searchTerms,
+  expression: like(upper(ri!text),"*" &amp; upper(fv!item) &amp; "*")
+)
+  ),
+  or(
+    #"SYSTEM_SYSRULES_forEach"(
+  items: ri!searchTerms,
+  expression: like(upper(ri!text),"*" &amp; upper(fv!item) &amp; "*")
+)
+  )
+)</definition>
+        <namedTypedValue>
+            <name>text</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>searchTerms</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>and</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1728839"/>
+    </history>
+</contentHaul>

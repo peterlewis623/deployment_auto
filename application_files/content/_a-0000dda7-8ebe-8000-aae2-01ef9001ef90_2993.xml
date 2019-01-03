@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22381</versionUuid>
+    <rule>
+        <name>ICM_IsUsernameAvailable</name>
+        <uuid>_a-0000dda7-8ebe-8000-aae2-01ef9001ef90_2993</uuid>
+        <description>Input username,
+Output true if the username does not already exist, false if it does</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3578</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>not(isusernametaken(
+  lower(ri!student.firstName)&amp;
+  "."&amp;
+  lower(ri!student.lastName)
+)
+)</definition>
+        <namedTypedValue>
+            <name>student</name>
+            <type>
+                <name>ICM_studentGrid?list</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22381"/>
+    </history>
+</contentHaul>

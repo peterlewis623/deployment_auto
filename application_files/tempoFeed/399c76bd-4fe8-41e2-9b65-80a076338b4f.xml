@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tempoFeedHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>67f8d52b-48d8-464f-a44a-1ec5e3696a57</versionUuid>
+    <tempoFeed>
+        <uuid>399c76bd-4fe8-41e2-9b65-80a076338b4f</uuid>
+        <name>ICM Class News Feed</name>
+        <description>News feed for the ICM Application</description>
+        <showInCatalog>true</showInCatalog>
+        <systemFeed>false</systemFeed>
+    </tempoFeed>
+    <roleMap>
+        <role name="administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dd13-95ea-8000-aae2-011e94011e94_36</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="67f8d52b-48d8-464f-a44a-1ec5e3696a57"/>
+    </history>
+</tempoFeedHaul>

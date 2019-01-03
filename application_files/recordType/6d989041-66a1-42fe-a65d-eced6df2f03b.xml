@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>2e5c8863-9ee7-4c64-84e3-e2ebad397914</versionUuid>
+  <recordType a:uuid="6d989041-66a1-42fe-a65d-eced6df2f03b" name="ICM Frequently Asked Question">
+    <a:pluralName>ICM Frequently Asked Questions</a:pluralName>
+    <a:description>Frequently Asked Questions and Answers</a:description>
+    <a:urlStub>8340cg</a:urlStub>
+    <a:source a:uuid="{urn:com:appian:types:ICM}ICM_FaQ" xsi:type="a:Datatype"/>
+    <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_recordGridLayoutColumns"(
+  columns: {
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Topic",
+      width: "NARROW",
+      field: "topic",
+      align: "CENTER",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayValue: rf!topic,
+        align: "CENTER"
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Question",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_richTextDisplayField"(
+        value: {
+          #"SYSTEM_SYSRULES_richTextItem_v1"(
+            text: {rf!question},
+            style: {
+              "EMPHASIS"
+            }
+          )
+        }
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Answer",
+      field: "answer",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayValue: rf!answer,
+        align: null
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Usefulness",
+      width: "NARROW",
+      field: "usefulness",
+      align: "CENTER",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayvalue: if(
+          isnull(rf!usefulness),
+          null,
+          #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727509"[rf!usefulness]
+          )
+      )
+    )
+  },
+  pageSize: 50,
+  defaultSort: #"SYSTEM_SYSRULES_sortInfo"(
+    field: "student",
+    ascending: fn!true()
+  ),
+  shadeAlternateRows: true
+)</a:listViewTemplateExpr>
+    <a:detailViewCfg>
+      <a:nameExpr>="Summary"</a:nameExpr>
+      <a:uiExpr/>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+      <a:urlStub>summary</a:urlStub>
+      <a:headerExpr/>
+    </a:detailViewCfg>
+    <a:isSystem>false</a:isSystem>
+    <a:dataSrcExpr/>
+    <a:facetsListExpr>#"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727490"(
+  #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1726362",
+  "topic"
+)</a:facetsListExpr>
+    <a:titleExpr/>
+    <a:defaultFiltersExpr/>
+    <a:layoutType>GRID</a:layoutType>
+    <a:security>16383</a:security>
+    <a:hideLatestNews>false</a:hideLatestNews>
+    <a:isExportable>false</a:isExportable>
+    <a:listViewSrcExpr>with( 
+  local!topicIndex: wherecontains("topic", index(rsp!filters, "field", "")),
+  local!topics: if(
+    length(local!topicIndex) &gt; 0,
+    index(rsp!filters, "value", {}),
+    {}
+  ),
+  local!result: #"eb6c9471-976a-435f-852d-0cf193e7e2c7"(
+    field: null,
+    topic: if(
+      length(local!topics)&gt;0,
+      local!topics,
+      null
+      ),
+    searchTerms: rsp!searchText
+  ).result.body,
+  local!FaQ:cast(
+    'type!{urn:com:appian:types:ICM}ICM_FaQ?list',
+    local!result
+  ),
+  #"SYSTEM_SYSRULES_dataSubset"(
+    startIndex: rsp!pagingInfo.startIndex,
+    batchSize: rsp!pagingInfo.batchSize,
+    sort: rsp!pagingInfo.sort,
+    totalCount:  count(local!result),
+    data: local!FaQ,
+    identifiers: local!FaQ.id
+  )
+)  </a:listViewSrcExpr>
+    <a:recordViewSrcExpr>with( 
+  local!topicIndex: wherecontains("topic", index(rsp!filters, "field", "")),
+  local!topics: if(
+    length(local!topicIndex) &gt; 0,
+    index(rsp!filters, "value", {}),
+    {}
+  ),
+  local!result: #"eb6c9471-976a-435f-852d-0cf193e7e2c7"(
+    field: null,
+    topic: if(
+      length(local!topics)&gt;0,
+      local!topics,
+      null
+      ),
+    searchTerms: rsp!searchText
+  ).result.body,
+  local!FaQ:cast(
+    'type!{urn:com:appian:types:ICM}ICM_FaQ?list',
+    local!result
+  ),
+  #"SYSTEM_SYSRULES_dataSubset"(
+    startIndex: rsp!pagingInfo.startIndex,
+    batchSize: rsp!pagingInfo.batchSize,
+    sort: rsp!pagingInfo.sort,
+    totalCount:  count(local!result),
+    data: local!FaQ,
+    identifiers: local!FaQ.id
+  )
+)  </a:recordViewSrcExpr>
+    <a:recordListActionCfg>
+      <a:staticTitle>Manage Topics</a:staticTitle>
+      <a:staticDescription>Manage Topics</a:staticDescription>
+      <a:iconId>f044</a:iconId>
+      <a:target a:uuid="0002e1e6-ec3d-8000-f92f-7f0000014e7a" xsi:type="a:ProcessModel"/>
+      <a:visibilityExpr>=true()</a:visibilityExpr>
+    </a:recordListActionCfg>
+  </recordType>
+  <roleMap/>
+  <history>
+    <historyInfo versionUuid="6307c5ca-ed6d-4875-9770-3d20eb62bb31"/>
+    <historyInfo versionUuid="2e5c8863-9ee7-4c64-84e3-e2ebad397914"/>
+  </history>
+  <migrationVersion>1</migrationVersion>
+</recordTypeHaul>

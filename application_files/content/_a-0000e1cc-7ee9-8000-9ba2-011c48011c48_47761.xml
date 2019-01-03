@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727519</versionUuid>
+    <rule>
+        <name>ICM_AnswerQuestions</name>
+        <uuid>_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47761</uuid>
+        <description>Interface for the instructor to answer a question</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!topics: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47697",
+  local!topic: ri!studentQuestion.topic,
+  local!newTopic: ri!studentQuestion.newTopic,
+  #"SYSTEM_SYSRULES_formLayout_v1"(
+  label: "Answer Question",
+  contents: {
+    #"SYSTEM_SYSRULES_sectionLayout_v1"(
+      label: "Student Question",
+      contents: {
+        #"SYSTEM_SYSRULES_columnsLayout"(
+          columns: {
+            #"SYSTEM_SYSRULES_columnLayout"(
+              contents: {
+                #"SYSTEM_SYSRULES_imageField_v1"(
+                  label: "Image",
+                  labelPosition: "COLLAPSED",
+                  images: {
+                    #"SYSTEM_SYSRULES_userImage"(
+                      user: ri!studentQuestion.student
+                    )
+                  },
+                  size: "MEDIUM",
+                  isThumbnail: false,
+                  style: "AVATAR",
+                  align: "CENTER"
+                ),
+                #"SYSTEM_SYSRULES_textField"(
+                  label: "Student",
+                  labelPosition: "COLLAPSED",
+                  value: user(ri!studentQuestion.student,"firstName") &amp; " " &amp; user(ri!studentQuestion.student,"lastName"),
+                  saveInto: {},
+                  refreshAfter: "UNFOCUS",
+                  readonly: true,
+                  validations: {},
+                  align: "CENTER"
+                )
+              },
+              width: "NARROW"
+            ),
+            #"SYSTEM_SYSRULES_columnLayout"(
+              contents: {
+                #"SYSTEM_SYSRULES_richTextDisplayField"(
+                  label: "Rich Text",
+                  labelPosition: "COLLAPSED",
+                  value: {
+                    #"SYSTEM_SYSRULES_richTextItem_v1"(
+                      text: {
+                        #"SYSTEM_SYSRULES_richTextItem_v1"(
+                          text: {if(
+                              ri!studentQuestion.topic="Not Listed",
+                              ri!studentQuestion.newTopic,
+                              ri!studentQuestion.topic
+                            )},
+                          style: {
+                            "EMPHASIS"
+                          }
+                        )
+                      }
+                    )
+                  }
+                ),
+                #"SYSTEM_SYSRULES_paragraphField"(
+                  label: "Question",
+                  labelPosition: "COLLAPSED",
+                  value: ri!studentQuestion.question,
+                  saveInto: {},
+                  refreshAfter: "UNFOCUS",
+                  readonly: true,
+                  height: "MEDIUM",
+                  validations: {}
+                )
+              }
+            )
+          }
+        )
+      },
+      marginbelow: "STANDARD"
+    ),
+    #"SYSTEM_SYSRULES_columnsLayout"(
+      columns: {
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_sectionLayout_v1"(
+              label: "Instructor Answer",
+              contents: {
+                #"SYSTEM_SYSRULES_paragraphField"(
+                  label: "Answer",
+                  labelPosition: "ABOVE",
+                  value: ri!instructorAnswer.answer,
+                  saveInto: ri!instructorAnswer.answer,
+                  refreshAfter: "UNFOCUS",
+                  required: true,
+                  height: "MEDIUM",
+                  validations: {}
+                ),
+                #"SYSTEM_SYSRULES_paragraphField"(
+                  label: "Links to documentation",
+                  labelPosition: "ABOVE",
+                  instructions: "Enter each on a separate line",
+                  value: joinarray(split(ri!instructorAnswer.links,"; "),"
+"),
+                  saveInto: ri!instructorAnswer.links,
+                  refreshAfter: "UNFOCUS",
+                  height: "MEDIUM",
+                  validations: {}
+                )
+              }
+            )
+          }
+        ),
+        #"SYSTEM_SYSRULES_columnLayout"(
+          contents: {
+            #"SYSTEM_SYSRULES_sectionLayout_v1"(
+              label: "Answer Options",
+              contents: {
+                #"SYSTEM_SYSRULES_radioButtonField"(
+                  label: "Post on News",
+                  labelPosition: "ABOVE",
+                  choiceLabels: {"Yes","No"},
+                  choiceValues: {true,false},
+                  value: ri!instructorAnswer.postNews,
+                  saveInto: ri!instructorAnswer.postNews,
+                  required: true,
+                  choiceLayout: "COMPACT",
+                  validations: {}
+                ),
+                #"SYSTEM_SYSRULES_dropdownField"(
+                  label: "Usefulness of Question",
+                  labelPosition: "ABOVE",
+                  placeholderLabel: "--- Select a Value ---",
+                  choiceLabels: {
+                    #"_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727509"
+                  },
+                  choiceValues: {1,2,3,4,5},
+                  value: ri!instructorAnswer.usefulness,
+                  saveInto: ri!instructorAnswer.usefulness,
+                  required: true,
+                  validations: {}
+                ),
+                #"SYSTEM_SYSRULES_dropdownField"(
+                              label: "Change Topic?",
+                              labelPosition: "ABOVE",
+                              instructions: "Only change if topic is not correct",
+                              placeholderLabel: "--- Select a Value ---",
+                              choiceLabels: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47971"(),
+                              choiceValues: #"_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_47971"(),
+                              value: local!topic,
+                              saveInto: {
+                                local!topic,
+                                if(
+                                  local!topic="Not Listed",
+                                  null,
+                                  a!save(
+                                    target: local!newTopic,
+                                    value: null
+                                  )
+                                )
+                                },
+                              required: false,
+                              validations: {}
+                            ),
+                            #"SYSTEM_SYSRULES_textField"(
+              label: "Your Topic",
+              labelPosition: "ABOVE",
+              instructions: len(ri!studentQuestion.newTopic) &amp; "/30",
+              value: local!newTopic,
+              saveInto: local!newTopic,
+              refreshAfter: "KEYPRESS",
+              showwhen: local!topic="Not Listed",
+              required: local!topic="Not Listed",
+              validations: if(
+                len(ri!studentQuestion.newTopic)&gt;30,
+                "Your topic needs to be less than 30 characters",
+                null
+              )
+            )
+              }
+            )
+          },
+          width: "NARROW"
+        )
+      }
+    )
+  },
+  buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+    primaryButtons: {
+      #"SYSTEM_SYSRULES_ButtonWidget"(
+        label: "Submit",
+        saveInto: {
+          a!save(
+          target: ri!instructorAnswer.links,
+          value: split(ri!instructorAnswer.links,"
+")
+          ),
+          a!save(
+            target: ri!instructorAnswer.questionId,
+            value: ri!studentQuestion.id
+          ),
+          a!save(
+            target: ri!instructorAnswer.instructor,                                 
+            value: user(loggedInUser(),"firstName") &amp; " " &amp; user(loggedInUser(),"lastName")
+          ),
+          a!save(
+            target: ri!instructorAnswer.changeTopic,
+            value: if(
+              ri!studentQuestion.topic = "Not Listed",
+              not(local!newTopic = ri!studentQuestion.newTopic),
+              not(local!topic = ri!studentQuestion.topic)
+            )
+          ),
+          a!save(
+            target: ri!instructorAnswer.newTopic,
+            value: if(
+              ri!instructorAnswer.changeTopic,
+              if(
+                local!topic="Not Listed",
+                local!newTopic,
+                local!topic
+              ),
+              null
+            )
+          )
+        },
+        submit: true,
+        style: "PRIMARY"
+      )
+    },
+    secondaryButtons: {}
+  )
+)
+)</definition>
+        <namedTypedValue>
+            <name>studentQuestion</name>
+            <type>
+                <name>ICM_StudentQuestion</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>instructorAnswer</name>
+            <type>
+                <name>ICM_InstructorAnswer</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <typedValue>
+        <type>
+            <name>RuleTestConfig?list</name>
+            <namespace>http://www.appian.com/ae/types/2009</namespace>
+        </type>
+        <value>
+            <el>
+                <a:name/>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:Expression">{
+  student: "nath.hunt"
+}</a:value>
+                    <a:nameRef>studentQuestion</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:ruleInputTestConfigs>
+                    <a:value xmlns:n1="urn:com:appian:types:ICM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" xsi:type="n1:ICM_InstructorAnswer"/>
+                    <a:nameRef>instructorAnswer</a:nameRef>
+                    <a:id/>
+                </a:ruleInputTestConfigs>
+                <a:assertions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            </el>
+        </value>
+    </typedValue>
+    <history>
+        <historyInfo versionUuid="_a-0000e1cc-7ee9-8000-9ba2-011c48011c48_48058"/>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727519"/>
+    </history>
+</contentHaul>

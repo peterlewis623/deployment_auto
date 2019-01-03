@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727479</versionUuid>
+    <rule>
+        <name>ICM_FaQ</name>
+        <uuid>_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727461</uuid>
+        <description>Returns the correctly formatted list of frequently asked questions</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3578</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>with( 
+  local!result: #"eb6c9471-976a-435f-852d-0cf193e7e2c7"().result.body,
+  local!FaQ:cast(
+    'type!{urn:com:appian:types:ICM}ICM_FaQ?list',
+    local!result
+  ),
+  #"SYSTEM_SYSRULES_dataSubset"(
+    startIndex: 1,
+    batchSize: 20,
+    sort: #"SYSTEM_SYSRULES_sortInfo"(
+      field: "id",
+      ascending: false
+    ),
+    totalCount: count(local!result),
+    data: local!FaQ,
+    identifiers: local!FaQ.id
+  )
+)  </definition>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e1b0-3c85-8000-9ba2-011c48011c48_1727479"/>
+    </history>
+</contentHaul>

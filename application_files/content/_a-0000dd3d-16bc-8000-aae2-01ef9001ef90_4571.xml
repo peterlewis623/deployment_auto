@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000dfce-b49e-8000-9ba2-011c48011c48_623162</versionUuid>
+    <rule>
+        <name>ICM_AddStudentsEditableGrid</name>
+        <uuid>_a-0000dd3d-16bc-8000-aae2-01ef9001ef90_4571</uuid>
+        <description>Editable grid to add users</description>
+        <parentUuid>_a-0000dd1c-f866-8000-aae2-01ef9001ef90_3581</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=load(&#xD;
+  /* Needed when adding or removing items via a!applyComponents */&#xD;
+  local!itemsToken,&#xD;
+  #"SYSTEM_SYSRULES_gridLayout"(
+    label: "Students",&#xD;
+        totalCount: count(ri!students),&#xD;
+        headerCells: {&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "First Name"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Last Name"),&#xD;
+          /* For the "Remove" column */&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "")&#xD;
+        },&#xD;
+        /* Only needed when some columns need to be narrow */&#xD;
+        columnConfigs: {&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width: "DISTRIBUTE"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width: "DISTRIBUTE"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width: "ICON")&#xD;
+        },&#xD;
+        rows: #"SYSTEM_SYSRULES_applyComponents"(&#xD;
+          function: #"_a-0000dd3c-e64f-8000-aae2-01ef9001ef90_4569"(&#xD;
+            items: ri!students,&#xD;
+            index: _,&#xD;
+            itemsToken: local!itemsToken&#xD;
+          ),&#xD;
+          array: if(or(isnull(ri!students), count(ri!students) &lt; 1), {}, 1+enumerate(count(ri!students))),&#xD;
+          arrayVariable: local!itemsToken&#xD;
+        ),
+    selectionrequired: false,&#xD;
+        addRowlink: #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+          label: "Add Student",&#xD;
+          /*&#xD;
+           * For your use case, set the value to a blank instance of your CDT using&#xD;
+           * the type constructor, e.g. type!PurchaseRequestItem(). Only specify the field&#xD;
+           * if you want to give it a default value e.g. due: today()+1.&#xD;
+           */&#xD;
+          value: 'type!{urn:com:appian:types:ICM}ICM_studentGrid'(),&#xD;
+          saveInto: {&#xD;
+            a!save(ri!students, append(ri!students, save!value)),&#xD;
+            /*` When modifying the size of the array used in a!applyComponents, */&#xD;
+            /* make the same change in the "token" array variable               */&#xD;
+            a!save(local!itemsToken, append(local!itemsToken, save!value))&#xD;
+          }&#xD;
+        )&#xD;
+      )&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>students</name>
+            <type>
+                <name>ICM_studentGrid?list</name>
+                <namespace>urn:com:appian:types:ICM</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000df8e-b6d8-8000-9ba2-011c48011c48_22394"/>
+        <historyInfo versionUuid="_a-0000dfce-b49e-8000-9ba2-011c48011c48_623162"/>
+    </history>
+</contentHaul>
